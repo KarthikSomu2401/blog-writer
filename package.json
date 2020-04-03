@@ -2,9 +2,9 @@
   "name": "cs615-project",
   "version": "1.0.0",
   "description": "This project is used to create some stories along with snapshots and tags for better collaborative learning",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "nodemon"
   },
   "repository": {
     "type": "git",
@@ -17,7 +17,10 @@
   },
   "homepage": "https://github.com/KillerD/CS615-project#readme",
   "dependencies": {
+    "bcrypt": "^4.0.1",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mongoose": "^5.9.7",
+    "nodemon": "^2.0.2"
   }
 }

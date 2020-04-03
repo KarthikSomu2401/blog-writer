@@ -1,0 +1,23 @@
+{
+  "name": "cs615-project",
+  "version": "1.0.0",
+  "description": "This project is used to create some stories along with snapshots and tags for better collaborative learning",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KillerD/CS615-project.git"
+  },
+  "author": "Karthikeyan Somasundaram, Siddhartha Ranganathan, Bindu Nag",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KillerD/CS615-project/issues"
+  },
+  "homepage": "https://github.com/KillerD/CS615-project#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1"
+  }
+}

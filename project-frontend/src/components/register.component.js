@@ -37,8 +37,10 @@ export default class Register extends Component {
       error
     ) {
       if (error) alert(error);
-      alert(response.statusText);
-      window.location.pathname = '/sign-in';
+      else {
+        alert(response.statusText);
+        window.location.pathname = "/sign-in";
+      }
     });
   }
 
@@ -55,6 +57,12 @@ export default class Register extends Component {
       case "password":
         passwordValid = value.length >= 6;
         fieldValidationErrors.password = passwordValid ? "" : " is too short";
+        break;
+      case "confirm":
+        passwordValid = value.match(this.state.password);
+        fieldValidationErrors.password = passwordValid
+          ? ""
+          : " should match with password";
         break;
       default:
         break;
@@ -84,72 +92,74 @@ export default class Register extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <h3>Register</h3>
-        <div className="panel panel-default">
-          <FormErrors formErrors={this.state.formErrors} />
-        </div>
+      <div className="auth-inner">
+        <form onSubmit={this.handleSubmit}>
+          <h3>Register</h3>
+          <div className="panel panel-default">
+            <FormErrors formErrors={this.state.formErrors} />
+          </div>
 
-        <div className="form-group">
-          <label>Full name</label>
-          <input
-            type="text"
-            className="form-control"
-            name="fullName"
-            placeholder="First name"
-            value={this.state.fullName}
-            onChange={this.myChangeHandler}
-          />
-        </div>
+          <div className="form-group">
+            <label>Full name</label>
+            <input
+              type="text"
+              className="form-control"
+              name="fullName"
+              placeholder="First name"
+              value={this.state.fullName}
+              onChange={this.myChangeHandler}
+            />
+          </div>
 
-        <div className="form-group">
-          <label>Email address</label>
-          <input
-            type="email"
-            className="form-control"
-            name="emailId"
-            placeholder="Enter email address"
-            value={this.state.emailId}
-            onChange={this.myChangeHandler}
-          />
-        </div>
+          <div className="form-group">
+            <label>Email address</label>
+            <input
+              type="email"
+              className="form-control"
+              name="emailId"
+              placeholder="Enter email address"
+              value={this.state.emailId}
+              onChange={this.myChangeHandler}
+            />
+          </div>
 
-        <div className="form-group">
-          <label>Password</label>
-          <input
-            type="password"
-            className="form-control"
-            name="password"
-            placeholder="Enter password"
-            value={this.state.password}
-            onChange={this.myChangeHandler}
-          />
-        </div>
+          <div className="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              className="form-control"
+              name="password"
+              placeholder="Enter password"
+              value={this.state.password}
+              onChange={this.myChangeHandler}
+            />
+          </div>
 
-        <div className="form-group">
-          <label>Confirm Password</label>
-          <input
-            type="password"
-            className="form-control"
-            name="confirm"
-            placeholder="Enter confirm password"
-            value={this.state.confirm}
-            onChange={this.myChangeHandler}
-          />
-        </div>
+          <div className="form-group">
+            <label>Confirm Password</label>
+            <input
+              type="password"
+              className="form-control"
+              name="confirm"
+              placeholder="Enter confirm password"
+              value={this.state.confirm}
+              onChange={this.myChangeHandler}
+            />
+          </div>
 
-        <button
-          disabled={!this.state.formValid}
-          type="submit"
-          className="btn btn-primary btn-block"
-        >
-          Register
-        </button>
+          <button
+            disabled={!this.state.formValid}
+            type="submit"
+            className="btn btn-primary btn-block"
+          >
+            Register
+          </button>
 
-        <p className="forgot-password text-right">
-          Already registered? <a href="/sign-in">sign in</a>
-        </p>
-      </form>
+          <p className="forgot-password text-right">
+            Already registered? <a href="/sign-in">sign in</a>
+          </p>
+        </form>
+      </div>
     );
   }
 }

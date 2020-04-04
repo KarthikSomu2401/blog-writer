@@ -2,37 +2,44 @@ import React, { Component } from "react";
 import FormErrors from "../FormErrors";
 
 export default class Register extends Component {
-  constructor() {
-    super();
-    this.state = {
-      fullName: "",
-      emailId: null,
-      password: null,
-      confirm: null,
-      formErrors: { email: "", password: "" },
-      emailValid: false,
-      passwordValid: false,
-      formValid: false,
-    };
+  state = {
+    fullName: "",
+    emailId: "",
+    password: "",
+    confirm: "",
+    formErrors: { emailId: "", password: "" },
+    emailValid: false,
+    passwordValid: false,
+    formValid: false,
+  };
+
+  constructor(props) {
+    super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.myChangeHandler = this.myChangeHandler.bind(this);
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    const data = new FormData(event.target);
-    /* data.append("fullName", event.target.fullName.value);
-    data.append("emailId", event.target.emailId.value);
-    data.append("password", event.target.password.value); */
-    var baseUrl = process.env.REACT_APP_API_URL;
-    console.log(data);
-    fetch(baseUrl + "/users/createuser", {
+    let formdata = {
+      fullName: this.state.fullName,
+      emailId: this.state.emailId,
+      password: this.state.password,
+    };
+    const requestOptions = {
       method: "POST",
-      body: data,
-    }).then(function (res, err) {
-      if (err) alert("Error");
-      else {
-        alert(res);
-      }
-    });
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formdata),
+    };
+    console.log(formdata);
+    var baseUrl = process.env.REACT_APP_API_URL;
+    fetch(baseUrl + "/users/createuser", requestOptions)
+      .then(function (res, err) {
+        if (err) alert("Error");
+        else {
+          alert(res);
+        }
+      });
   }
 
   validateField(fieldName, value) {
@@ -69,8 +76,7 @@ export default class Register extends Component {
   }
 
   myChangeHandler = (event) => {
-    let name = event.target.name;
-    let value = event.target.value;
+    let { name, value } = event.target;
     this.setState({ [name]: value }, () => {
       this.validateField(name, value);
     });
@@ -91,6 +97,7 @@ export default class Register extends Component {
             className="form-control"
             name="fullName"
             placeholder="First name"
+            value={this.state.fullName}
             onChange={this.myChangeHandler}
           />
         </div>
@@ -102,6 +109,7 @@ export default class Register extends Component {
             className="form-control"
             name="emailId"
             placeholder="Enter email address"
+            value={this.state.emailId}
             onChange={this.myChangeHandler}
           />
         </div>
@@ -113,6 +121,7 @@ export default class Register extends Component {
             className="form-control"
             name="password"
             placeholder="Enter password"
+            value={this.state.password}
             onChange={this.myChangeHandler}
           />
         </div>
@@ -124,6 +133,7 @@ export default class Register extends Component {
             className="form-control"
             name="confirm"
             placeholder="Enter confirm password"
+            value={this.state.confirm}
             onChange={this.myChangeHandler}
           />
         </div>

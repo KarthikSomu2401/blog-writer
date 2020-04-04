@@ -38,6 +38,7 @@ export default class Register extends Component {
     ) {
       if (error) alert(error);
       alert(response.statusText);
+      window.location.pathname = '/sign-in';
     });
   }
 

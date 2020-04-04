@@ -5,7 +5,7 @@ const db = require('./database');
 const user = require('./routes/user.route');
 var app = express();
 
-app.use(express.static('public'));
+//app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 

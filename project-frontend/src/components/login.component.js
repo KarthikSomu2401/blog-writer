@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { FaUserPlus } from "react-icons/fa";
-import { BrowserRouter as Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 
 export default class Login extends Component {
@@ -28,13 +27,13 @@ export default class Login extends Component {
         </div>
 
         <button type="submit" className="btn btn-primary btn-block">
-          Submit
+          Sign In
         </button>
         <p className="forgot-password text-right">
           Forgot <a href="#">password?</a>
         </p>
         <hr />
-        <Button href="/register" className="btn btn-warning btn-block">
+        <Button href='/register' className="btn btn-warning btn-block">
           <FaUserPlus /> Register
         </Button>
       </form>

@@ -31,15 +31,14 @@ export default class Register extends Component {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formdata),
     };
-    console.log(formdata);
     var baseUrl = process.env.REACT_APP_API_URL;
-    fetch(baseUrl + "/users/createuser", requestOptions)
-      .then(function (res, err) {
-        if (err) alert("Error");
-        else {
-          alert(res);
-        }
-      });
+    fetch(baseUrl + "/users/createuser", requestOptions).then(function (
+      response,
+      error
+    ) {
+      if (error) alert(error);
+      alert(response.statusText);
+    });
   }
 
   validateField(fieldName, value) {

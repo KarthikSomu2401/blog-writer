@@ -10,14 +10,12 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <div className="auth-wrapper">
-          <Switch>
-            <Route exact path="/" component={Login} />
-            <Route path="/sign-in" component={Login} />
-            <Route path="/register" component={Register} />
-            <Route path="/dashboard" component={Dashboard} />
-          </Switch>
-        </div>
+        <Switch>
+          <Route exact path="/" component={Login} />
+          <Route path="/sign-in" component={Login} />
+          <Route path="/register" component={Register} />
+          <Route path="/dashboard" component={Dashboard} />
+        </Switch>
       </div>
     </Router>
   );

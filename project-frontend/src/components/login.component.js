@@ -31,7 +31,7 @@ export default class Login extends Component {
       error
     ) {
       if (error) alert(error);
-      if (response.statusText == "OK") {
+      if (response.statusText === "OK") {
         window.location.pathname = "/dashboard";
       } else {
         alert(response.statusText);
@@ -46,45 +46,47 @@ export default class Login extends Component {
 
   render() {
     return (
-      <div className="auth-inner">
-        <form onSubmit={this.handleSubmit}>
-          <h3>Sign In</h3>
+      <div className="auth-wrapper">
+        <div className="auth-inner">
+          <form onSubmit={this.handleSubmit}>
+            <h3>Sign In</h3>
 
-          <div className="form-group">
-            <label>Email address</label>
-            <input
-              type="email"
-              className="form-control"
-              placeholder="Enter email"
-              name="emailId"
-              value={this.state.emailId}
-              onChange={this.myChangeHandler}
-            />
-          </div>
+            <div className="form-group">
+              <label>Email address</label>
+              <input
+                type="email"
+                className="form-control"
+                placeholder="Enter email"
+                name="emailId"
+                value={this.state.emailId}
+                onChange={this.myChangeHandler}
+              />
+            </div>
 
-          <div className="form-group">
-            <label>Password</label>
-            <input
-              type="password"
-              className="form-control"
-              placeholder="Enter password"
-              name="password"
-              value={this.state.password}
-              onChange={this.myChangeHandler}
-            />
-          </div>
+            <div className="form-group">
+              <label>Password</label>
+              <input
+                type="password"
+                className="form-control"
+                placeholder="Enter password"
+                name="password"
+                value={this.state.password}
+                onChange={this.myChangeHandler}
+              />
+            </div>
 
-          <button type="submit" className="btn btn-primary btn-block">
-            Sign In
-          </button>
-          <p className="forgot-password text-right">
-            Forgot <a href="#">password?</a>
-          </p>
-          <hr />
-          <Button href="/register" className="btn btn-warning btn-block">
-            <FaUserPlus /> Register
-          </Button>
-        </form>
+            <button type="submit" className="btn btn-primary btn-block">
+              Sign In
+            </button>
+            <p className="forgot-password text-right">
+              Forgot <a href="#">password?</a>
+            </p>
+            <hr />
+            <Button href="/register" className="btn btn-warning btn-block">
+              <FaUserPlus /> Register
+            </Button>
+          </form>
+        </div>
       </div>
     );
   }

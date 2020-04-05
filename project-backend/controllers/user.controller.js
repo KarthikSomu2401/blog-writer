@@ -20,6 +20,10 @@ exports.login_user = function (req, res, next) {
     } else {
       bcrypt.compare(req.body.password, user.password, function (err, result) {
         if (result == true) {
+          req.session.user = {
+            email: user.emailId,
+            name: user.fullName,
+          };
           res.status(200).send("User details found");
         } else {
           res.status(401).send("Password mismatch");

@@ -1,7 +1,7 @@
 const express = require("express");
 const session = require("express-session");
 const cors = require("cors");
-const uuid = require("uuidv4");
+//const uuid = require("uuidv4");
 const bodyParser = require("body-parser");
 const envs = require("./configurations");
 const db = require("./database");
@@ -9,18 +9,18 @@ const MongoDBStore = require("connect-mongodb-session")(session);
 const user = require("./routes/user.route");
 var app = express();
 
-const store = new MongoDBStore({
+/* const store = new MongoDBStore({
   uri: envs.MONGO_URL,
   collection: "sessions",
-});
+}); */
 
 app.use(cors());
 app.use(
   session({
     secret: envs.NODE_ENV,
-    genid: (req) => {
+    /* genid: (req) => {
       return uuid();
-    },
+    }, */
     store: store,
     resave: false,
     saveUninitialized: true,

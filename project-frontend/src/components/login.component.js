@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { FaUserPlus } from "react-icons/fa";
 import Button from "react-bootstrap/Button";
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
 
 export default class Login extends Component {
   state = {
@@ -26,17 +28,36 @@ export default class Login extends Component {
       body: JSON.stringify(formdata),
     };
     var baseUrl = process.env.REACT_APP_API_URL;
-    fetch(baseUrl + "/users/loginuser", requestOptions).then(function (
-      response,
-      error
-    ) {
-      if (error) alert(error);
-      if (response.statusText === "OK") {
-        window.location.pathname = "/dashboard";
-      } else {
-        alert(response.statusText);
-      }
-    });
+    fetch(baseUrl + "/users/loginuser", requestOptions)
+      .then((response) => response.json())
+      .then(function (data) {
+        const promise1 = new Promise(function (resolve, reject) {
+          cookies.set("emailId", data.email);
+          cookies.set("fullName", data.name);
+          setTimeout(function () {
+            resolve();
+          }, 1000);
+        });
+        promise1.then(function (value) {
+          window.location.pathname = "/dashboard";
+        });
+        /* else {
+          if (response.status === 200) {
+            return;
+            const promise1 = new Promise(function (resolve, reject) {
+              console.log(response);
+              cookies.set("emailId", response.email);
+              cookies.set("fullName", response.name);
+              setTimeout(function () {
+                resolve();
+              }, 1000);
+            });
+            promise1.then(function (value) {
+              //window.location.pathname = "/dashboard";
+            });
+          }
+        } */
+      });
   }
 
   myChangeHandler = (event) => {

@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import NavHeader from "./navbar.component";
 
-class Dashboard extends Component {
+class About extends Component {
   render() {
     return (
       <div>
         <NavHeader />
-        <h1>Dashboard</h1>
+        <h1>About</h1>
       </div>
     );
   }
@@ -14,6 +14,6 @@ class Dashboard extends Component {
 
 export default () => (
   <div>
-    <Dashboard />
+    <About />
   </div>
 );

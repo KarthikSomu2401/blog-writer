@@ -81,3 +81,76 @@ body, html, .App, #root, .auth-wrapper {
 .forgot-password a {
   color: #167bff;
 }
+
+.prof-icon-sm {
+  border-radius: 50%;
+  width: 12%;
+  height: 12%;
+}
+
+.prof-icon-md {
+  border-radius: 50%;
+  width: 20%;
+  height: 20%;
+}
+
+.searchBox {
+  position: absolute;
+  /* transform: translate(-50%, 50%); */
+  background: #ffffff;
+  height: 40px;
+  border-radius: 40px;
+}
+
+.searchBox:hover>.searchInput {
+  width: 240px;
+  padding: 0 6px;
+}
+
+.searchBox:hover>.searchButton {
+  background: white;
+  color: #2f3640;
+}
+
+.nav-title {
+  color: black;
+}
+
+.searchButton {
+  color: white;
+  float: right;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #2f3640;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.4s;
+}
+
+.searchInput {
+  border: none;
+  background: none;
+  outline: none;
+  float: left;
+  padding: 0;
+  color: black;
+  font-size: 16px;
+  transition: 0.4s;
+  line-height: 40px;
+  width: 0px;
+}
+
+@media screen and (max-width: 620px) {
+  .searchBox:hover>.searchInput {
+    width: 150px;
+    padding: 0 6px;
+  }
+}
+
+.dropdown-header-center {
+  left: 50% !important;
+  right: auto !important;
+  text-align: center !important;
+}

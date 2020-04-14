@@ -24,18 +24,38 @@ exports.login_user = function (req, res, next) {
             email: user.emailId,
             name: user.fullName,
           };
-          res.status(200).send("User details found");
+          res.status(200).send(req.session.user);
         } else {
           res.status(401).send("Password mismatch");
         }
       });
     }
   });
+};
 
-  /*   user.findOne(function (err) {
-    if (err) {
-      return next(err);
+exports.logout_user = function (req, res, next) {
+  console.log(req.session.user);
+  delete req.session.user;
+  delete req.cookies;
+  console.log(req.session.user);
+  res.status(200);
+  /* User.findOne({
+    emailId: req.body.emailId,
+  }).then(function (user) {
+    if (!user) {
+      res.status(404).send("User details not found");
+    } else {
+      bcrypt.compare(req.body.password, user.password, function (err, result) {
+        if (result == true) {
+          req.session.user = {
+            email: user.emailId,
+            name: user.fullName,
+          };
+          res.status(200).send("User details found");
+        } else {
+          res.status(401).send("Password mismatch");
+        }
+      });
     }
-    res.status(201).send("User Created successfully");
   }); */
 };

@@ -76,6 +76,11 @@ class NavHeader extends Component {
                   Home
                 </a>
               </li>
+              <li className="nav-item">
+                <a className="nav-link nav-title" href="/add-article">
+                  Add Article
+                </a>
+              </li>
               {/* <li className="nav-item">
                 <a className="nav-link nav-title" href="#">
                   Features

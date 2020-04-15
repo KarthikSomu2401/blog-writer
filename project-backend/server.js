@@ -8,6 +8,7 @@ const envs = require("./configurations");
 const db = require("./database");
 const MongoDBStore = require("connect-mongodb-session")(session);
 const user = require("./routes/user.route");
+const article = require("./routes/article.route");
 var morgan = require("morgan");
 var app = express();
 
@@ -41,14 +42,8 @@ app.use(
   })
 );
 
-/* app.use((req, res, next) => {
-  if (req.cookies.user_sid && !req.session.user) {
-    res.clearCookie("user_sid");
-  }
-  next();
-}); */
-
 app.use("/users", user);
+app.use("/articles", article);
 
 var listener = app.listen(envs.PORT, function () {
   console.log("Listening on port " + listener.address().port);

@@ -10,6 +10,7 @@ import Register from "./components/register.component";
 import Dashboard from "./components/dashboard.component";
 import AddArticle from "./components/addarticle.component";
 import EditArticle from "./components/editarticle.component";
+import DisplayArticle from "./components/displayarticle.component";
 import About from "./components/about.component";
 /* import Articles from "./components/Articles";
 import AddArticle from "./components/AddArticle";
@@ -27,6 +28,7 @@ function App() {
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/add-article" component={AddArticle} />
           <Route path="/article/:id" component={EditArticle} />
+          <Route path="/view/:id" component={DisplayArticle} />
           <Route path="/about" component={About} />
         </Switch>
       </div>

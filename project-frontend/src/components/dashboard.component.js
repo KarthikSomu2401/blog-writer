@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import NavHeader from "./navbar.component";
 import { Link } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
+import ReactHtmlParser from "react-html-parser";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -76,7 +77,7 @@ class Dashboard extends Component {
       <div>
         <NavHeader />
         <br />
-        <div className="container">
+        <div className="container container-fluid">
           <div className="row">
             <div className="col-lg-8 col-md-8">
               <h1>All stories</h1>
@@ -86,12 +87,14 @@ class Dashboard extends Component {
                 <div key={key}>
                   <Link
                     to={{
-                      pathname: `/article/${article._id}`,
+                      pathname: `/view/${article._id}`,
                     }}
                   >
-                    <h2>{article.title}</h2>
+                    <h2 className="">{article.title}</h2>
                   </Link>
-                  <p>{article.article}</p>
+                  <div className="article-pre">
+                    {ReactHtmlParser(article.article)}
+                  </div>
                   <span className="badge badge-secondary p-2">
                     {article.authorname}
                   </span>
@@ -117,7 +120,7 @@ class Dashboard extends Component {
                 </div>
               ))}
             </div>
-            <div className="container col-lg-4 col-lg-4">
+            <div className="col-lg-4 col-lg-4">
               <h1>your interests</h1>
             </div>
           </div>

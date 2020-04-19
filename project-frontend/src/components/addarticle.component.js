@@ -1,6 +1,13 @@
 import React, { Component } from "react";
 import NavHeader from "./navbar.component";
 import Cookies from "js-cookie";
+import RichTextEditor from "./richtexteditor.component";
+//import Image from '@ckeditor/ckeditor5-image/src/image';
+
+//import Essentials from "@ckeditor/ckeditor5-essentials/src/essentials";
+//import Bold from "@ckeditor/ckeditor5-basic-styles/src/bold";
+//import Italic from "@ckeditor/ckeditor5-basic-styles/src/italic";
+//import Paragraph from "@ckeditor/ckeditor5-paragraph/src/paragraph";
 
 class AddArticle extends Component {
   state = {
@@ -40,8 +47,13 @@ class AddArticle extends Component {
 
   myChangeHandler = (event) => {
     var article = { ...this.state.article };
-    let { name, value } = event.target;
-    article[name] = value;
+    if (event.target === undefined) {
+      let value = event;
+      article["article"] = value;
+    } else {
+      let { name, value } = event.target;
+      article[name] = value;
+    }
     this.setState({ article });
   };
 
@@ -49,8 +61,10 @@ class AddArticle extends Component {
     return (
       <div>
         <NavHeader />
-        <div className="conatiner">
+        <br />
+        <div className="container container-fluid">
           <h1> Add Article </h1>
+          <hr />
           <form onSubmit={this.handleSubmit} encType="multipart/form-data">
             <div className="form-group">
               <label htmlFor="authorname">Author Name</label>
@@ -76,13 +90,13 @@ class AddArticle extends Component {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="exampleFormControlTextarea1">Article</label>
-              <textarea
+              <label htmlFor="article">Article</label>
+              <RichTextEditor
                 name="article"
                 value={this.state.article.article}
                 onChange={this.myChangeHandler}
                 className="form-control"
-              ></textarea>
+              />
             </div>
             <button type="submit" className="btn btn-primary">
               Post Article
@@ -94,8 +108,4 @@ class AddArticle extends Component {
   }
 }
 
-export default () => (
-  <div>
-    <AddArticle />
-  </div>
-);
+export default () => <AddArticle />;

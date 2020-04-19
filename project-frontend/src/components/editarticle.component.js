@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import NavHeader from "./navbar.component";
+import ReactHtmlParser from "react-html-parser";
+import RichTextEditor from "./richtexteditor.component";
 
 class EditArticle extends Component {
   articleId = "";
@@ -22,8 +24,13 @@ class EditArticle extends Component {
 
   myChangeHandler = (event) => {
     var article = { ...this.state.article };
-    let { name, value } = event.target;
-    article[name] = value;
+    if (event.target === undefined) {
+      let value = event;
+      article["article"] = value;
+    } else {
+      let { name, value } = event.target;
+      article[name] = value;
+    }
     this.setState({ article });
   };
 
@@ -95,13 +102,13 @@ class EditArticle extends Component {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="exampleFormControlTextarea1">Article</label>
-              <textarea
+              <label htmlFor="article">Article</label>
+              <RichTextEditor
                 name="article"
                 value={this.state.article.article}
                 onChange={this.myChangeHandler}
                 className="form-control"
-              ></textarea>
+              />
             </div>
             <button type="submit" className="btn btn-primary">
               Post Article

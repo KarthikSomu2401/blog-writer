@@ -154,3 +154,9 @@ body, html, .App, #root, .auth-wrapper {
   right: auto !important;
   text-align: center !important;
 }
+
+.article-pre {
+  height: 25px;
+  max-height: 100px;
+  overflow: hidden;
+}

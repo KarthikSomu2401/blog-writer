@@ -104,7 +104,7 @@ class DisplayArticle extends Component {
         <br />
         <div className="container container-fluid">
           <div className="row">
-            <div className="col-lg-8 col-md-8">
+            <div className="col-lg-8 col-md-8 text-break">
               <h2>{this.state.article.title}</h2>
               <h6>
                 Author Name: {this.state.article.authorname}
@@ -133,7 +133,7 @@ class DisplayArticle extends Component {
           </div>
           <hr />
           <div className="row">
-            <div className="col-lg-12 col-md-12 align-self-center">
+            <div className="col-lg-12 col-md-12 align-self-center text-break">
               {ReactHtmlParser(this.state.article.article)}
             </div>
           </div>

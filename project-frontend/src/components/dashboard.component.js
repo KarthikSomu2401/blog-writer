@@ -77,51 +77,73 @@ class Dashboard extends Component {
       <div>
         <NavHeader />
         <br />
-        <div className="container container-fluid">
+        <div className="container-fluid">
           <div className="row">
             <div className="col-lg-8 col-md-8">
-              <h1>All stories</h1>
-              <hr />
-              <br />
-              {this.state.articles.map((article, key) => (
-                <div key={key}>
-                  <Link
-                    to={{
-                      pathname: `/view/${article._id}`,
-                    }}
-                  >
-                    <h2 className="">{article.title}</h2>
-                  </Link>
-                  <div className="article-pre">
-                    {ReactHtmlParser(article.article)}
-                  </div>
-                  <span className="badge badge-secondary p-2">
-                    {article.authorname}
-                  </span>
-                  <div className="row my-3">
-                    <div className="col-sm-2">
-                      <Link
-                        to={`/article/${article._id}`}
-                        className="btn btn-outline-success"
-                      >
-                        Edit Article
-                      </Link>
+              <div className="jumbotron">
+                <h1>All Stories</h1>
+                <hr />
+                {this.state.articles.map((article, key) => (
+                  <div key={key}>
+                    <div className="row">
+                      <div className="col-lg-8 col-md-8 inline text-break">
+                        <Link
+                          to={{
+                            pathname: `/view/${article._id}`,
+                          }}
+                        >
+                          <h2>{article.title}</h2>
+                        </Link>
+                        <span className="badge badge-secondary p-2">
+                          {article.authorname}
+                        </span>
+                      </div>
+                      <div className="col-lg-4 col-md-4 inline">
+                        <span>
+                          <Link
+                            to={`/article/${article._id}`}
+                            className="btn btn-outline-success"
+                          >
+                            Edit Article
+                          </Link>
+                        </span>
+                        <span className="col-lg col-md">
+                          <button
+                            onClick={() => this.deleteAlert(article._id)}
+                            className="btn btn-outline-danger"
+                          >
+                            Delete Article
+                          </button>
+                        </span>
+                      </div>
                     </div>
-                    <div className="col-sm-2">
-                      <button
-                        onClick={() => this.deleteAlert(article._id)}
-                        className="btn btn-outline-danger"
-                      >
-                        Delete Article
-                      </button>
+                    <br />
+                    <div className="row">
+                      <div className="col-lg-12 col-md-12">
+                        <div className="article-pre">
+                          {ReactHtmlParser(article.article)}
+                        </div>
+                      </div>
+                      <div className="col-lg-12 col-md-12">
+                        <Link
+                          className="read-more-bt"
+                          to={{
+                            pathname: `/view/${article._id}`,
+                          }}
+                        >
+                          Full Article >
+                        </Link>
+                      </div>
                     </div>
+                    <hr />
                   </div>
-                  <hr />
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
             <div className="col-lg-4 col-lg-4">
-              <h1>your interests</h1>
+              <div className="jumbotron">
+                <h1>Your Interests</h1>
+              </div>
             </div>
           </div>
         </div>

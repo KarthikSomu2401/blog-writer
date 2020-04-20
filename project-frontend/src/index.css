@@ -160,3 +160,18 @@ body, html, .App, #root, .auth-wrapper {
   max-height: 100px;
   overflow: hidden;
 }
+
+.jumbotron {
+  background-color: #F8F9FA;
+}
+
+.read-more-bt {
+  background-color: #F8F9FA;
+  border-color: black;
+  min-width: 100%;
+}
+
+.read-more-bt:hover {
+  background-color: #2f3640;
+  color: #F8F9FA;
+}

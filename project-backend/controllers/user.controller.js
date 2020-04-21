@@ -1,4 +1,6 @@
 const User = require("../models/user.model");
+const UserLog = require("../models/userlog.model");
+
 const bcrypt = require("bcrypt");
 
 exports.create_user = function (req, res, next) {
@@ -24,6 +26,21 @@ exports.login_user = function (req, res, next) {
             email: user.emailId,
             name: user.fullName,
           };
+
+
+          //userlog code
+
+          const user1 = new UserLog({
+            emailId: req.session.user.email,
+            fullName: req.session.user.name,
+            timestamp: new Date(),
+            action: "Logged_IN",
+
+          });
+          user1
+           .save()
+           .then(() => console.log('logged in'))
+           .catch((err) => console.log('logging failed  '));
           res.status(200).send(req.session.user);
         } else {
           res.status(401).send("Password mismatch");
@@ -35,6 +52,18 @@ exports.login_user = function (req, res, next) {
 
 exports.logout_user = function (req, res, next) {
   console.log(req.session.user);
+  const user1 = new UserLog({
+    emailId: req.cookies.emailId,
+    fullName: req.cookies.fullName,
+    timestamp: new Date(),
+    action: "Logged_OUT"
+
+  });
+  user1
+   .save()
+   .then(() => console.log('logged out'))
+   .catch((err) => console.log('logging failed  '));
+
   delete req.session.user;
   delete req.cookies;
   console.log(req.session.user);

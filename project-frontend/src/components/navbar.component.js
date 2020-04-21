@@ -139,7 +139,7 @@ class NavHeader extends Component {
                     About
                   </a>
                   <div className="dropdown-divider"></div>
-                  <a className="dropdown-item" href="/logout">
+                  <a className="dropdown-item" href="/logout-user">
                     Logout
                   </a>
                 </div>

@@ -47,7 +47,11 @@ class EditArticle extends Component {
           articleObj[item] = data[item];
         });
         this.setState({ article: articleObj });
-      });
+      })
+      .catch(function(err) {
+        alert('The Requested Article is in use');
+        window.location.pathname = "/dashboard";
+    })
   }
 
   handleSubmit(event) {

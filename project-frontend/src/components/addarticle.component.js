@@ -2,27 +2,34 @@ import React, { Component } from "react";
 import NavHeader from "./navbar.component";
 import Cookies from "js-cookie";
 import RichTextEditor from "./richtexteditor.component";
-//import Image from '@ckeditor/ckeditor5-image/src/image';
+import CreatableMulti from "./multiselect.component";
 
-//import Essentials from "@ckeditor/ckeditor5-essentials/src/essentials";
-//import Bold from "@ckeditor/ckeditor5-basic-styles/src/bold";
-//import Italic from "@ckeditor/ckeditor5-basic-styles/src/italic";
-//import Paragraph from "@ckeditor/ckeditor5-paragraph/src/paragraph";
+const createOption = (label) => ({
+  label,
+  value: label,
+});
 
 class AddArticle extends Component {
   state = {
     error: null,
     isLoaded: false,
     article: {
+      _id: "",
       authorname: Cookies.get("fullName"),
       title: "",
       article: "",
+      tags: [],
+      inputValue: "",
     },
   };
 
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.myChangeHandler = this.myChangeHandler.bind(this);
+    this.handleCreate = this.handleCreate.bind(this);
+    this.handleEditorChange = this.handleEditorChange.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -45,15 +52,44 @@ class AddArticle extends Component {
       });
   }
 
+  handleCreate = (options) => {
+    var article = { ...this.state.article };
+    article["tags"] = options;
+    this.setState({ article });
+  };
+  handleEditorChange = (text) => {
+    var article = { ...this.state.article };
+    article["article"] = text;
+    this.setState({ article });
+  };
+
+  handleInputChange = (inputValue) => {
+    var article = { ...this.state.article };
+    article["inputValue"] = inputValue;
+    this.setState({ article });
+  };
+
+  handleKeyDown = (event) => {
+    var article = { ...this.state.article };
+    if (!article.inputValue) return;
+    switch (event.key) {
+      case "Enter":
+      case "Tab":
+        var newArt = {
+          inputValue: "",
+          tags: [...article.tags, createOption(article.inputValue)],
+        };
+        article["inputValue"] = newArt.inputValue;
+        article["tags"] = newArt.tags;
+        this.setState({ article });
+        event.preventDefault();
+    }
+  };
+
   myChangeHandler = (event) => {
     var article = { ...this.state.article };
-    if (event.target === undefined) {
-      let value = event;
-      article["article"] = value;
-    } else {
-      let { name, value } = event.target;
-      article[name] = value;
-    }
+    let { name, value } = event.target;
+    article[name] = value;
     this.setState({ article });
   };
 
@@ -72,7 +108,6 @@ class AddArticle extends Component {
                 type="text"
                 name="authorname"
                 value={this.state.article.authorname}
-                onChange={this.myChangeHandler}
                 className="form-control"
                 placeholder="Author Name"
                 disabled
@@ -94,8 +129,21 @@ class AddArticle extends Component {
               <RichTextEditor
                 name="article"
                 value={this.state.article.article}
-                onChange={this.myChangeHandler}
+                onChange={this.handleEditorChange}
                 className="form-control"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="articleTags">Tags</label>
+              <CreatableMulti
+                name="articleTags"
+                value={this.state.article.tags}
+                inputValue={this.state.article.inputValue}
+                onChange={this.handleCreate}
+                onInputChange={this.handleInputChange}
+                onKeyDown={this.handleKeyDown}
+                className="form-control"
+                placeholder="Select/Create some tags..."
               />
             </div>
             <button type="submit" className="btn btn-primary">
@@ -108,4 +156,4 @@ class AddArticle extends Component {
   }
 }
 
-export default () => <AddArticle />;
+export default AddArticle;

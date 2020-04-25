@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import NavHeader from "./navbar.component";
-import ReactHtmlParser from "react-html-parser";
 import RichTextEditor from "./richtexteditor.component";
+import CreatableMulti from "./multiselect.component";
+
+const createOption = (label) => ({
+  label,
+  value: label,
+});
 
 class EditArticle extends Component {
   articleId = "";
@@ -13,24 +18,59 @@ class EditArticle extends Component {
       authorname: "",
       title: "",
       article: "",
+      tags: [],
+      inputValue: "",
     },
   };
 
   constructor() {
     super();
     this.myChangeHandler = this.myChangeHandler.bind(this);
+    this.handleCreate = this.handleCreate.bind(this);
+    this.handleEditorChange = this.handleEditorChange.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  handleCreate = (options) => {
+    var article = { ...this.state.article };
+    article["tags"] = options;
+    this.setState({ article });
+  };
+  handleEditorChange = (text) => {
+    var article = { ...this.state.article };
+    article["article"] = text;
+    this.setState({ article });
+  };
+
+  handleInputChange = (inputValue) => {
+    var article = { ...this.state.article };
+    article["inputValue"] = inputValue;
+    this.setState({ article });
+  };
+
+  handleKeyDown = (event) => {
+    var article = { ...this.state.article };
+    if (!article.inputValue) return;
+    switch (event.key) {
+      case "Enter":
+      case "Tab":
+        var newArt = {
+          inputValue: "",
+          tags: [...article.tags, createOption(article.inputValue)],
+        };
+        article["inputValue"] = newArt.inputValue;
+        article["tags"] = newArt.tags;
+        this.setState({ article });
+        event.preventDefault();
+    }
+  };
+
   myChangeHandler = (event) => {
     var article = { ...this.state.article };
-    if (event.target === undefined) {
-      let value = event;
-      article["article"] = value;
-    } else {
-      let { name, value } = event.target;
-      article[name] = value;
-    }
+    let { name, value } = event.target;
+    article[name] = value;
     this.setState({ article });
   };
 
@@ -48,10 +88,10 @@ class EditArticle extends Component {
         });
         this.setState({ article: articleObj });
       })
-      .catch(function(err) {
-        alert('The Requested Article is in use');
+      .catch(function (err) {
+        alert("The Requested Article is in use");
         window.location.pathname = "/dashboard";
-    })
+      });
   }
 
   handleSubmit(event) {
@@ -80,8 +120,10 @@ class EditArticle extends Component {
     return (
       <div>
         <NavHeader />
-        <div className="conatiner">
+        <br />
+        <div className="container container-fluid">
           <h1> Edit Article </h1>
+          <hr />
           <form onSubmit={this.handleSubmit} encType="multipart/form-data">
             <div className="form-group">
               <label htmlFor="authorname">Author Name</label>
@@ -110,8 +152,21 @@ class EditArticle extends Component {
               <RichTextEditor
                 name="article"
                 value={this.state.article.article}
-                onChange={this.myChangeHandler}
+                onChange={this.handleEditorChange}
                 className="form-control"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="articleTags">Tags</label>
+              <CreatableMulti
+                name="articleTags"
+                value={this.state.article.tags}
+                inputValue={this.state.article.inputValue}
+                onChange={this.handleCreate}
+                onInputChange={this.handleInputChange}
+                onKeyDown={this.handleKeyDown}
+                className="form-control"
+                placeholder="Select/Create some tags..."
               />
             </div>
             <button type="submit" className="btn btn-primary">

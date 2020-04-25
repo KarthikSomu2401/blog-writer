@@ -91,7 +91,7 @@ class NavHeader extends Component {
                   Pricing
                 </a>
               </li> */}
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <span className="searchBox">
                   <input
                     className="searchInput"
@@ -105,7 +105,7 @@ class NavHeader extends Component {
                     </i>
                   </button>
                 </span>
-              </li>
+              </li> */}
             </ul>
             <ul className="navbar-nav ml-auto nav-flex-icons">
               <li className="nav-item">

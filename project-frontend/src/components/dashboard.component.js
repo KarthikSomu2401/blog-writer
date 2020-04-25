@@ -1,17 +1,21 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import NavHeader from "./navbar.component";
 import { Link } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import ReactHtmlParser from "react-html-parser";
 
 class Dashboard extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       error: null,
       isLoaded: false,
+      currentPage: 1,
+      postsPerPage: 10,
       articles: [],
+      articlesFiltered: [],
     };
+    this.handleArticleFilter = this.handleArticleFilter.bind(this);
   }
 
   async componentDidMount() {
@@ -24,6 +28,7 @@ class Dashboard extends Component {
           this.setState({
             isLoaded: true,
             articles: result,
+            articlesFiltered: result,
           });
         },
         (error) => {
@@ -52,6 +57,26 @@ class Dashboard extends Component {
     });
   }
 
+  handleArticleFilter = function (event) {
+    let searchVal = event.target.value;
+    let filteredValues = this.state.articles.filter((article) => {
+      if (searchVal === null) {
+        return article;
+      } else if (
+        article.title.toLowerCase().includes(searchVal.toLowerCase()) ||
+        article.tags
+          .map((p) => p.value)
+          .join(",")
+          .toLowerCase()
+          .includes(searchVal.toLowerCase()) ||
+        article.authorname.toLowerCase().includes(searchVal.toLowerCase())
+      ) {
+        return article;
+      }
+    });
+    this.setState({ articlesFiltered: filteredValues });
+  };
+
   deleteArticle(articleId) {
     const requestOptions = {
       method: "DELETE",
@@ -72,6 +97,9 @@ class Dashboard extends Component {
       });
   }
 
+  //pagination
+  //indexOfLastPost = this.state.currentPage * this.state.postsPerPage;
+
   render() {
     return (
       <div>
@@ -82,8 +110,16 @@ class Dashboard extends Component {
             <div className="col-lg-8 col-md-8">
               <div className="jumbotron">
                 <h1>All Stories</h1>
+                <div className="form-group">
+                  <input
+                    type="text"
+                    className="form-control"
+                    onChange={this.handleArticleFilter}
+                    placeholder="Type to search for articles..."
+                  />
+                </div>
                 <hr />
-                {this.state.articles.map((article, key) => (
+                {this.state.articlesFiltered.map((article, key) => (
                   <div key={key}>
                     <div className="row">
                       <div className="col-lg-8 col-md-8 inline text-break">
@@ -97,6 +133,25 @@ class Dashboard extends Component {
                         <span className="badge badge-secondary p-2">
                           {article.authorname}
                         </span>
+                        {article.tags.length > 0 ? (
+                          <p>
+                            <br />
+                            Tags:
+                            {article.tags.map((val, key) => (
+                              <span
+                                key={key}
+                                className="badge badge-secondary p-2"
+                              >
+                                {val.value}
+                              </span>
+                            ))}
+                          </p>
+                        ) : (
+                          <p key={key}>
+                            <br />
+                            No tags
+                          </p>
+                        )}
                       </div>
                       <div className="col-lg-4 col-md-4 inline">
                         <span>

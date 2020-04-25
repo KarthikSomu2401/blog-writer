@@ -14,6 +14,7 @@ class DisplayArticle extends Component {
       authorname: "",
       title: "",
       article: "",
+      tags: [],
     },
   };
 
@@ -111,6 +112,14 @@ class DisplayArticle extends Component {
                 <br />
               </h6>
               <p>Edited By:</p>
+              {this.state.article.tags.length > 0 ? (
+                <p>
+                  Tags:{" "}
+                  {this.state.article.tags.map((val) => val.value).join(",")}
+                </p>
+              ) : (
+                <span></span>
+              )}
             </div>
             <div className="col-lg-4 col-md-4">
               <span className="col-lg-2 col-md-2">

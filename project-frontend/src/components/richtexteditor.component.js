@@ -7,7 +7,7 @@ import { ImageDrop } from "quill-image-drop-module";
 Quill.register("modules/imageResize", ImageResize);
 Quill.register("modules/imageDrop", ImageDrop);
 
-export default class RichTextEditor extends Component {
+class RichTextEditor extends Component {
   constructor(props) {
     super(props);
   }
@@ -79,3 +79,5 @@ export default class RichTextEditor extends Component {
     );
   }
 }
+
+export default RichTextEditor;

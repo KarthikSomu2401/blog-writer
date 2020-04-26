@@ -1,9 +1,20 @@
   
-import React from 'react';
+import React, {Component}from 'react';
 import { Image, Jumbotron, Button, } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
+import Cookies from 'js-cookie'
+import NavHeader from "./navbar.component";
 
-class ProfileView extends Component{
+const Style = {
+  backgroundColor: '#eff0f2',
+  paddingTop: '0px',
+}
+const Style2 = {
+  width: "100%",
+  height: "50%"
+}
+
+class DisplayProfile extends Component{
   state = {
     error: null,
     isLoaded: false,
@@ -25,7 +36,7 @@ class ProfileView extends Component{
   componentDidMount() {
     const { params } = this.props.match;
     this.userId = params.id;
-    fetch(`${process.env.REACT_APP_API_URL}/profile`, {
+    fetch(`${process.env.REACT_APP_API_URL}/profile/displayprofile`, {
       credentials: "include",
     })
       .then((response) => response.json())
@@ -62,7 +73,10 @@ class ProfileView extends Component{
 
 render(){
     return (
+     
         <div>
+           <NavHeader />
+           
           <Jumbotron>
             <h2 style={{ textAlign: 'center' }}>Welcome  {this.state.name}</h2>
             <hr />
@@ -84,4 +98,4 @@ render(){
     )
 }}
 
-export { ProfileView };
+export default DisplayProfile ;

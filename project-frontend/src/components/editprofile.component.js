@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import NavHeader from "./navbar.component";
 import ReactHtmlParser from "react-html-parser";
-
+import Cookies from 'js-cookie';
 class EditProfile extends Component {
   state = {
     error: null,
@@ -41,7 +41,7 @@ class EditProfile extends Component {
         Object.keys(data).forEach(function (item) {
           profileObj[item] = data[item];
         });
-        this.setState({ article: profileObj });
+        this.setState({ profile: profileObj });
       });
   }
 
@@ -75,14 +75,25 @@ class EditProfile extends Component {
           <h1> Edit Profile </h1>
           <form onSubmit={this.handleSubmit} encType="multipart/form-data">
             <div className="form-group">
-              <label htmlFor="birthday"> Birthday</label>
+              <label htmlFor="email"> Email</label>
+              <input
+                type="text"
+                name="email"
+                value={this.state.profile.emailId}
+                className="form-control"
+                placeholder="Email"
+                disabled
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="birthday">Birthday</label>
               <input
                 type="text"
                 name="birthday"
-                value={this.state.article.birthday}
+                value={this.state.profile.birthday}
+                onChange={this.myChangeHandler}
                 className="form-control"
                 placeholder="Birthday"
-                disabled
               />
             </div>
             <div className="form-group">
@@ -90,10 +101,10 @@ class EditProfile extends Component {
               <input
                 type="text"
                 name="city"
-                value={this.state.article.city}
+                value={this.state.profile.city}
                 onChange={this.myChangeHandler}
                 className="form-control"
-                placeholder="city"
+                placeholder="City"
               />
             </div>
             <div className="form-group">
@@ -101,10 +112,10 @@ class EditProfile extends Component {
               <input
                 type="text"
                 name="occupation"
-                value={this.state.article.occupation}
+                value={this.state.profile.occupation}
                 onChange={this.myChangeHandler}
                 className="form-control"
-                placeholder="occupation"
+                placeholder="Occupation"
               />
             </div>
             <div className="form-group">
@@ -112,10 +123,10 @@ class EditProfile extends Component {
               <input
                 type="text"
                 name="interests"
-                value={this.state.article.interests}
+                value={this.state.profile.interests}
                 onChange={this.myChangeHandler}
                 className="form-control"
-                placeholder="interests"
+                placeholder="Your interests"
               />
             </div>
             <div className="form-group">
@@ -123,10 +134,10 @@ class EditProfile extends Component {
               <input
                 type="text"
                 name="bio"
-                value={this.state.article.bio}
+                value={this.state.profile.bio}
                 onChange={this.myChangeHandler}
                 className="form-control"
-                placeholder="bio"
+                placeholder="Say something about yourself"
               />
             </div>
             <button type="submit" className="btn btn-primary">

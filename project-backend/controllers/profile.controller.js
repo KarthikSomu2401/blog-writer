@@ -12,7 +12,7 @@ const User = require("../models/user.model");
 
   exports.display_profile = function(req,res)  {
      const errors = {};
-   Profile.findOne({ user: req.user.emailId})
+   Profile.findOne({ emailId: req.user.emailId})
    .then(Profile => {
       if(!Profile){
       errors.noprofile = 'There no profile for the user';

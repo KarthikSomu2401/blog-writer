@@ -13,7 +13,8 @@ import EditArticle from "./components/editarticle.component";
 import DisplayArticle from "./components/displayarticle.component";
 import About from "./components/about.component";
 import Logout from "./components/logout.component";
-
+import EditProfile from "./components/editprofile.component";
+import DisplayProfile from "./components/displayprofile.component"
 /* import Articles from "./components/Articles";
 import AddArticle from "./components/AddArticle";
 import Article from "./components/Article";
@@ -31,6 +32,8 @@ function App() {
           <Route path="/add-article" component={AddArticle} />
           <Route path="/article/:id" component={EditArticle} />
           <Route path="/view/:id" component={DisplayArticle} />
+          <Route path="/editprofile" component={EditProfile} />
+          <Route path="/profile" component={DisplayProfile} />
           <Route path="/about" component={About} />
           <Route path="/logout-user" component={Logout} />
 

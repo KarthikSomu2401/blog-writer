@@ -11,6 +11,7 @@ const user = require("./routes/user.route");
 const article = require("./routes/article.route");
 var morgan = require("morgan");
 var app = express();
+const profile = require('./routes/profile.route');
 
 const dBstore = new MongoDBStore({
   uri: envs.MONGO_URL,
@@ -44,6 +45,7 @@ app.use(
 
 app.use("/users", user);
 app.use("/articles", article);
+app.use('/profile',profile);
 
 var listener = app.listen(envs.PORT, function () {
   console.log("Listening on port " + listener.address().port);

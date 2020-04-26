@@ -51,22 +51,25 @@ exports.login_user = function (req, res, next) {
 };
 
 exports.logout_user = function (req, res, next) {
-  console.log(req.session.user);
-  const user1 = new UserLog({
+
+  const user2 = new UserLog({
     emailId: req.cookies.emailId,
     fullName: req.cookies.fullName,
     timestamp: new Date(),
-    action: "Logged_OUT"
+    action: "Logged_OUT",
 
   });
-  user1
+
+ console.log(req.cookies.emailId)
+ console.log(req.cookies.fullName)
+
+  user2
    .save()
    .then(() => console.log('logged out'))
    .catch((err) => console.log('logging failed  '));
 
   delete req.session.user;
   delete req.cookies;
-  console.log(req.session.user);
   res.status(200);
   /* User.findOne({
     emailId: req.body.emailId,

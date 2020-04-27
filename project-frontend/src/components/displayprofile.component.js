@@ -19,11 +19,12 @@ class DisplayProfile extends Component{
     error: null,
     isLoaded: false,
     profile: {
+      _id: "",
       email: Cookies.get("emailId"),
       birthday: "",
       city: "",
       occupation: "",
-      interests: "",
+      interest: "",
       bio: "",
     },
   };
@@ -34,8 +35,8 @@ class DisplayProfile extends Component{
   }
 
   componentDidMount() {
-    const { params } = this.props.match;
-    this.userId = params.id;
+    //const { params } = this.props.match;
+    //this.profileId = params.id;
     fetch(`${process.env.REACT_APP_API_URL}/profile/displayprofile`, {
       credentials: "include",
     })
@@ -57,7 +58,7 @@ class DisplayProfile extends Component{
       body: JSON.stringify(this.state.profile),
     };
     fetch(
-      `${process.env.REACT_APP_API_URL}/profile`,
+      `${process.env.REACT_APP_API_URL}/profile/editprofile/${this.profileId}`,
       requestOptions
     )
       .then((response) => response.json())
@@ -78,19 +79,17 @@ render(){
            <NavHeader />
            
           <Jumbotron>
-            <h2 style={{ textAlign: 'center' }}>Welcome  {this.state.name}</h2>
+            <h2 style={{ textAlign: 'center' }}>Welcome  {this.state.profile.email}</h2>
             <hr />
             <div style={Style} className="container col-md-2">
                 <h2>Information</h2>
-                <p><b>Name:</b>  {this.state.name}</p>
-                <p><b>Email:</b>{this.state.email}</p>
-                <p><b>Birthday:</b>{this.state.birthday}</p>
-                <p><b>City:</b>{this.state.city}</p>
-                <p><b>Occupation:</b>{this.state.occupation}</p>
-                <p><b>Interests:</b>{this.state.interests}</p>
-                <p><b>Bio:</b>{this.state.bio}</p>
-
-                <Link to='/editprofile'>Edit Profile</Link>
+                <p><b>Email:</b>{this.state.profile.email}</p>
+                <p><b>Birthday:</b>{this.state.profile.birthday}</p>
+                <p><b>City:</b>{this.state.profile.city}</p>
+                <p><b>Occupation:</b>{this.state.profile.occupation}</p>
+                <p><b>Interests:</b>{this.state.profile.interest}</p>
+                <p><b>Bio:</b>{this.state.profile.bio}</p>
+                <Link to={{ pathname: `/editprofile/${this.state.profile._id}`, }}>Edit Profile</Link>
             </div>
             <hr />   
                 </Jumbotron>

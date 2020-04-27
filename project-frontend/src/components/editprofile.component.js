@@ -7,11 +7,12 @@ class EditProfile extends Component {
     error: null,
     isLoaded: false,
     profile: {
-        email: Cookies.get("emailId"),
-      birthday: "",
+      _id:"",
+      email: Cookies.get("emailId"),
+      //birthday: "",
       city: "",
       occupation: "",
-      interests: "",
+      interest: "",
       bio: "",
     },
   };
@@ -30,9 +31,7 @@ class EditProfile extends Component {
   };
 
   componentDidMount() {
-    const { params } = this.props.match;
-    this.email = params.email;
-    fetch(`${process.env.REACT_APP_API_URL}/profile`, {
+    fetch(`${process.env.REACT_APP_API_URL}/profile/displayprofile`, {
       credentials: "include",
     })
       .then((response) => response.json())
@@ -46,6 +45,8 @@ class EditProfile extends Component {
   }
 
   handleSubmit(event) {
+    const { params } = this.props.match;
+    this.profileId = params.id;
     event.preventDefault();
     const requestOptions = {
       method: "POST",
@@ -53,7 +54,7 @@ class EditProfile extends Component {
       body: JSON.stringify(this.state.profile),
     };
     fetch(
-      `${process.env.REACT_APP_API_URL}/profile/editprofile`,
+      `${process.env.REACT_APP_API_URL}/profile/editprofile/${this.profileId}`,
       requestOptions
     )
       .then((response) => response.json())
@@ -62,7 +63,7 @@ class EditProfile extends Component {
           resolve();
         });
         promise1.then(function (value) {
-          window.location.pathname = "/dashboard";
+          window.location.pathname = "/profile/displayprofile";
         });
       });
   }
@@ -79,13 +80,14 @@ class EditProfile extends Component {
               <input
                 type="text"
                 name="email"
-                value={this.state.profile.emailId}
+                value={this.state.profile.email}
                 className="form-control"
                 placeholder="Email"
+                onChange={this.myChangeHandler}
                 disabled
               />
             </div>
-            <div className="form-group">
+             <div className="form-group">
               <label htmlFor="birthday">Birthday</label>
               <input
                 type="text"
@@ -95,7 +97,7 @@ class EditProfile extends Component {
                 className="form-control"
                 placeholder="Birthday"
               />
-            </div>
+            </div> 
             <div className="form-group">
               <label htmlFor="city">City</label>
               <input
@@ -119,14 +121,14 @@ class EditProfile extends Component {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="interests">Interests</label>
+              <label htmlFor="interest">Interest</label>
               <input
                 type="text"
-                name="interests"
-                value={this.state.profile.interests}
+                name="interest"
+                value={this.state.profile.interest}
                 onChange={this.myChangeHandler}
                 className="form-control"
-                placeholder="Your interests"
+                placeholder="Your interest"
               />
             </div>
             <div className="form-group">

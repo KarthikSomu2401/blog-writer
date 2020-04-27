@@ -11,6 +11,6 @@ var sessionChecker = (req, res, next) => {
   };
 
 router.get("/displayprofile", profile_controller.display_profile);
-router.post("/editprofile", profile_controller.edit_profile);
+router.post("/editprofile/:id", profile_controller.edit_profile);
 //router.get("/test", profile_controller.test);
 module.exports = router;

@@ -32,7 +32,7 @@ function App() {
           <Route path="/add-article" component={AddArticle} />
           <Route path="/article/:id" component={EditArticle} />
           <Route path="/view/:id" component={DisplayArticle} />
-          <Route path="/editprofile" component={EditProfile} />
+          <Route path="/editprofile/:id" component={EditProfile} />
           <Route path="/profile" component={DisplayProfile} />
           <Route path="/about" component={About} />
           <Route path="/logout-user" component={Logout} />

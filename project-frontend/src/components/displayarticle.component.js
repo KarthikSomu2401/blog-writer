@@ -26,7 +26,7 @@ class DisplayArticle extends Component {
   componentDidMount() {
     const { params } = this.props.match;
     this.articleId = params.id;
-    fetch(`${process.env.REACT_APP_API_URL}/articles/${this.articleId}`, {
+    fetch(`${process.env.REACT_APP_API_URL}/articles/search/${this.articleId}`, {
       credentials: "include",
     })
       .then((response) => response.json())

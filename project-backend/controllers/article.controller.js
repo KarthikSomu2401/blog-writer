@@ -1,8 +1,6 @@
 const Article = require("../models/article.model");
 const ArticleTags = require("../models/tag.model");
 const ArticleLock = require("../models/locks.model");
-const UserLog = require("../models/userlog.model");
-
 
 const bcrypt = require("bcrypt");
 
@@ -31,30 +29,9 @@ exports.article_add = function (req, res, next) {
     });
   }); */
   //saving to mongodb
-/*  const user1 = new UserLog({
-    emailId: req.session.user.email,
-    fullName: req.session.user.name,
-    timestamp: new Date(),
-    action: "Added Article",
-
-  });*/
-
-
-  const user6 = new UserLog({
-
-    fullName: req.body.authorname,
-    timestamp: new Date(),
-    action: "ARTICLE ADDITION",
-    articleTitle: req.body.title,
-
-
-  });
-
   newArticle
     .save()
-    .then(() => user6.save()
-    .then(() =>  res.json("New article posted successfully"))
-  .catch((err) => res.status(400).json(`Error : ${err}`)))
+    .then(() => res.json("New article posted successfully"))
     .catch((err) => res.status(400).json(`Error : ${err}`));
 };
 
@@ -72,6 +49,17 @@ User.findOne({
           name: user.fullName,
         };
 */
+exports.get_article_byId_search = function(req, res, next){
+
+Article.findById(req.params.id)
+.then(function(article){
+  res.json(article)
+})
+.catch((err) => res.status(400).json("Fail"));
+}
+
+
+
 exports.get_article_byId = function (req, res, next) {
   //This is the original code
   /*  Article.findById(req.params.id)
@@ -79,10 +67,9 @@ exports.get_article_byId = function (req, res, next) {
     .catch((err) => res.status(400).json(`Error : ${err}`));*/
   const lockFile = new ArticleLock({
     id: req.params.id,
-    emailId: req.cookies.emailId,
+    username: req.cookies.fullName,
     timestamp: new Date(),
   });
-
 
   ArticleLock.findOne({ id: req.params.id })
     .then(function (article_lock) {
@@ -92,11 +79,11 @@ exports.get_article_byId = function (req, res, next) {
           .then(function (article) {
             lockFile
               .save()
-              .then(() => res.json(article))
-              .catch((err) => res.status(400).json(`Error: ${err}`));
-
+              .then(() => res.json(article), console.log("lock created"))
+              .catch((err) => res.status(400).json(`Error : ${err}`));
+            
           })
-          .catch((err) => res.status(400).json("Fail"));
+          .catch((err) => res.status(400).json(`Error : ${err}`));
       } else {
         res.status(404).json("Failed");
       }
@@ -118,25 +105,8 @@ exports.get_article_byId = function (req, res, next) {
 };
 
 exports.delete_article_byId = function (req, res, next) {
-
-  const user7 = new UserLog({
-
-    timestamp: new Date(),
-    action: "ARTICLE DELETION",
-    articleId: req.params.id,
-
-
-
-  });
-
-
-
-
   Article.findByIdAndDelete(req.params.id)
-    .then(() =>
-     user7.save()
-     .then(() => res.json("Article is deleted"))
-   .catch((err) => res.status(400).json(`Error: ${err}`)))
+    .then(() => res.json("Article is deleted"))
     .catch((err) => res.status(400).json(`Error: ${err}`));
 };
 
@@ -152,17 +122,6 @@ exports.edit_article_byId = function (req, res, next) {
   });
   var finArticleTags = new ArticleTags(finalTags);
   let tagsId = finArticleTags.save(); */
-  const user5 = new UserLog({
-
-    fullName: req.body.authorname,
-    timestamp: new Date(),
-    action: "ARTICLE UPDATION",
-    articleId: req.params.id,
-    articleTitle: req.body.title,
-
-  });
-
-
   Article.findById(req.params.id)
     .then((article) => {
       article.title = req.body.title;
@@ -174,13 +133,10 @@ exports.edit_article_byId = function (req, res, next) {
         .save()
         .then(() =>
           ArticleLock.findOneAndRemove({ id: req.params.id })
-            .then(() =>  user5
-            .save()
-            .then(() =>  res.json("Lock DELETED and Log Updated"))
-            .catch(() => console.log("Failed 1")))
-            .catch(() => console.log("Failed 2"))
+            .then(() => res.json("Lock DELETED"))
+            .catch(() => res.status(400).json("Failed"))
         )
-        .catch((err) => res.status(400).json(`Error: ${err}`));
+        .catch((err) => console.log("Unable to UPDATE"));
     })
     .catch((err) => res.status(400).json(`Error: ${err}`));
 };

@@ -24,8 +24,10 @@ class DisplayProfile extends Component{
       birthday: "",
       city: "",
       occupation: "",
-      interest: "",
+      //interest: "",
       bio: "",
+      tags: [],
+
     },
   };
 
@@ -83,12 +85,20 @@ render(){
             <hr />
             <div style={Style} className="container col-md-2">
                 <h2>Information</h2>
-                <p><b>Email:</b>{this.state.profile.email}</p>
+                <p><b>Email: </b>{this.state.profile.email}</p>
                 <p><b>Birthday:</b>{this.state.profile.birthday}</p>
-                <p><b>City:</b>{this.state.profile.city}</p>
-                <p><b>Occupation:</b>{this.state.profile.occupation}</p>
-                <p><b>Interests:</b>{this.state.profile.interest}</p>
-                <p><b>Bio:</b>{this.state.profile.bio}</p>
+                <p><b>City: </b>{this.state.profile.city}</p>
+                <p><b>Occupation: </b>{this.state.profile.occupation}</p>
+                {this.state.profile.tags ?(
+                this.state.profile.tags.length > 0 ? (
+                <p>
+                 <b>Interests:</b>{""}
+                  {this.state.profile.tags.map((val) => val.value).join(", ")}
+                </p>
+              ) : (
+                <span></span>
+                 ) ):(<span></span>)}
+                <p><b>Bio: </b>{this.state.profile.bio}</p>
                 <Link to={{ pathname: `/editprofile/${this.state.profile._id}`, }}>Edit Profile</Link>
             </div>
             <hr />   

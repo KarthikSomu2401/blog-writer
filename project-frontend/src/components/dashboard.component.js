@@ -133,7 +133,8 @@ class Dashboard extends Component {
                         <span className="badge badge-secondary p-2">
                           {article.authorname}
                         </span>
-                        {article.tags.length > 0 ? (
+                        {article.tags ? (
+                        article.tags.length > 0 ? (
                           <p>
                             <br />
                             Tags:
@@ -151,7 +152,7 @@ class Dashboard extends Component {
                             <br />
                             No tags
                           </p>
-                        )}
+                        )):(<span></span>)}
                       </div>
                       <div className="col-lg-4 col-md-4 inline">
                         <span>

@@ -1,4 +1,5 @@
 const Profile = require("../models/profile.model");
+const ArticleTags = require("../models/tag.model");
 const moongoose = require('mongoose');
 const bcrypt = require("bcrypt");
 
@@ -33,7 +34,7 @@ exports.edit_profile = function (req, res) {
    if (req.body.occupation) profileFields.occupation = req.body.occupation;
    if (req.body.interests) profileFields.interests = req.body.interests;
    if (req.body.bio) profileFields.bio = req.body.bio; */
-
+console.log(req.file);
    /* Profile.findById(req.params.id)
    .then(profile => {
       if(profile){
@@ -52,8 +53,10 @@ exports.edit_profile = function (req, res) {
          profile.birthday = req.body.birthday;
          profile.city = req.body.city;
          profile.occupation = req.body.occupation;
-         profile.interest = req.body.interest;
+         //profile.interest = req.body.interest;
          profile.bio = req.body.bio;
+         //profile.image = req.file.path;
+         profile.tags = req.body.tags;
          //update ==>
          profile
             .save().then(profile => res.json(profile));

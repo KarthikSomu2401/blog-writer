@@ -20,11 +20,12 @@ const dBstore = new MongoDBStore({
 
 app.use(cors());
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+
 app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-
+app.use('/uploads',express.static('public/uploads'));
 app.use(
   session({
     key: "user_sid",

@@ -21,7 +21,10 @@ router
   .route("/:id")
   .get(sessionChecker)
   .get(article_controller.get_article_byId);
-
+router
+  .route("/search/:id")
+  .get(sessionChecker)
+  .get(article_controller.get_article_byId_search);
 router
   .route("/:id")
   .get(sessionChecker)

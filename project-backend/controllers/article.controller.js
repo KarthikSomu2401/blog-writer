@@ -49,6 +49,17 @@ User.findOne({
           name: user.fullName,
         };
 */
+exports.get_article_byId_search = function(req, res, next){
+
+Article.findById(req.params.id)
+.then(function(article){
+  res.json(article)
+})
+.catch((err) => res.status(400).json("Fail"));
+}
+
+
+
 exports.get_article_byId = function (req, res, next) {
   //This is the original code
   /*  Article.findById(req.params.id)
@@ -69,10 +80,10 @@ exports.get_article_byId = function (req, res, next) {
             lockFile
               .save()
               .then(() => res.json(article), console.log("lock created"))
-              .catch((err) => res.status(400).json("Fail"));
-            res.json(article);
+              .catch((err) => res.status(400).json(`Error : ${err}`));
+            
           })
-          .catch((err) => res.status(400).json("Fail"));
+          .catch((err) => res.status(400).json(`Error : ${err}`));
       } else {
         res.status(404).json("Failed");
       }

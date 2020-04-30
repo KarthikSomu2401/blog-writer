@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const ArticleLockSchema = new Schema({
   id: { type: String, required: true, index: { unique: true }},
-  username: { type: String, required: true },
+  emailId: { type: String, required: true },
   timestamp: {type: String, required:true },
 });
 

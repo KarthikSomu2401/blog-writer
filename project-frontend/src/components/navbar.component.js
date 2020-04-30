@@ -135,6 +135,10 @@ class NavHeader extends Component {
                     {user.name}
                   </span>
                   <div className="dropdown-divider"></div>
+                  <a className="dropdown-item" href="/profile">
+                    Profile
+                  </a>
+                  <div className="dropdown-divider"></div>
                   <a className="dropdown-item" href="/about">
                     About
                   </a>

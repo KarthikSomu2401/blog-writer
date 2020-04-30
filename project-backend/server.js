@@ -9,6 +9,7 @@ const db = require("./database");
 const MongoDBStore = require("connect-mongodb-session")(session);
 const user = require("./routes/user.route");
 const article = require("./routes/article.route");
+const profile = require('./routes/profile.route');
 var morgan = require("morgan");
 var app = express();
 
@@ -44,6 +45,7 @@ app.use(
 
 app.use("/users", user);
 app.use("/articles", article);
+app.use('/profile',profile);
 
 var listener = app.listen(envs.PORT, function () {
   console.log("Listening on port " + listener.address().port);

@@ -3,6 +3,7 @@ import NavHeader from "./navbar.component";
 import { Link } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import ReactHtmlParser from "react-html-parser";
+import ReactPaginate from "react-paginate";
 
 class Dashboard extends Component {
   constructor() {
@@ -10,12 +11,15 @@ class Dashboard extends Component {
     this.state = {
       error: null,
       isLoaded: false,
-      currentPage: 1,
-      postsPerPage: 10,
+      offset: 0,
+      data: [],
+      perPage: 5,
+      currentPage: 0,
       articles: [],
       articlesFiltered: [],
     };
     this.handleArticleFilter = this.handleArticleFilter.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
   }
 
   async componentDidMount() {
@@ -28,8 +32,8 @@ class Dashboard extends Component {
           this.setState({
             isLoaded: true,
             articles: result,
-            articlesFiltered: result,
           });
+          this.paginationFilter();
         },
         (error) => {
           this.setState({
@@ -74,7 +78,163 @@ class Dashboard extends Component {
         return article;
       }
     });
-    this.setState({ articlesFiltered: filteredValues });
+    var outputValues = filteredValues.map((article) => (
+      <React.Fragment key={article._id}>
+        <div className="row">
+          <div className="col-lg-8 col-md-8 inline text-break">
+            <Link
+              to={{
+                pathname: `/view/${article._id}`,
+              }}
+            >
+              <h2>{article.title}</h2>
+            </Link>
+            <span className="badge badge-secondary p-2">
+              {article.authorname}
+            </span>
+            <p>
+              <br />
+              Tags:
+              {article.tags.map((val, key) => (
+                <span key={key} className="badge badge-secondary p-2">
+                  {val.value}
+                </span>
+              ))}
+            </p>
+          </div>
+          <div className="col-lg-4 col-md-4 inline">
+            <span>
+              <Link
+                to={`/article/${article._id}`}
+                className="btn btn-outline-success"
+              >
+                Edit Article
+              </Link>
+            </span>
+            <span className="col-lg col-md">
+              <button
+                onClick={() => this.deleteAlert(article._id)}
+                className="btn btn-outline-danger"
+              >
+                Delete Article
+              </button>
+            </span>
+          </div>
+        </div>
+        <br />
+        <div className="row">
+          <div className="col-lg-12 col-md-12">
+            <div className="article-pre">
+              {ReactHtmlParser(article.article)}
+            </div>
+          </div>
+          <div className="col-lg-12 col-md-12">
+            <Link
+              className="read-more-bt"
+              to={{
+                pathname: `/view/${article._id}`,
+              }}
+            >
+              Full Article >
+            </Link>
+          </div>
+        </div>
+        <hr />
+      </React.Fragment>
+    ));
+    this.setState({ articlesFiltered: outputValues });
+  };
+
+  paginationFilter = function () {
+    const data = this.state.articles;
+    const slice = data.slice(
+      this.state.offset,
+      this.state.offset + this.state.perPage
+    );
+    const postData = slice.map((article) => (
+      <React.Fragment key={article._id}>
+        <div className="row">
+          <div className="col-lg-8 col-md-8 inline text-break">
+            <Link
+              to={{
+                pathname: `/view/${article._id}`,
+              }}
+            >
+              <h2>{article.title}</h2>
+            </Link>
+            <span className="badge badge-secondary p-2">
+              {article.authorname}
+            </span>
+            <p>
+              <br />
+              Tags:
+              {article.tags.map((val, key) => (
+                <span key={key} className="badge badge-secondary p-2">
+                  {val.value}
+                </span>
+              ))}
+            </p>
+          </div>
+          <div className="col-lg-4 col-md-4 inline">
+            <span>
+              <Link
+                to={`/article/${article._id}`}
+                className="btn btn-outline-success"
+              >
+                Edit Article
+              </Link>
+            </span>
+            <span className="col-lg col-md">
+              <button
+                onClick={() => this.deleteAlert(article._id)}
+                className="btn btn-outline-danger"
+              >
+                Delete Article
+              </button>
+            </span>
+          </div>
+        </div>
+        <br />
+        <div className="row">
+          <div className="col-lg-12 col-md-12">
+            <div className="article-pre">
+              {ReactHtmlParser(article.article)}
+            </div>
+          </div>
+          <div className="col-lg-12 col-md-12">
+            <Link
+              className="read-more-bt"
+              to={{
+                pathname: `/view/${article._id}`,
+              }}
+            >
+              Full Article >
+            </Link>
+          </div>
+        </div>
+        <hr />
+      </React.Fragment>
+    ));
+
+    this.setState({
+      pageCount: Math.ceil(data.length / this.state.perPage),
+      articlesFiltered: postData,
+    });
+  };
+
+  handlePageChange = function (event) {
+    const selectedPage = event.selected;
+    const offset = selectedPage * this.state.perPage;
+
+    this.setState(
+      {
+        currentPage: selectedPage,
+        offset: offset,
+      },
+      () => {
+        this.paginationFilter();
+      }
+    );
   };
 
   deleteArticle(articleId) {
@@ -97,9 +257,6 @@ class Dashboard extends Component {
       });
   }
 
-  //pagination
-  //indexOfLastPost = this.state.currentPage * this.state.postsPerPage;
-
   render() {
     return (
       <div>
@@ -119,7 +276,8 @@ class Dashboard extends Component {
                   />
                 </div>
                 <hr />
-                {this.state.articlesFiltered.map((article, key) => (
+                {this.state.articlesFiltered}
+                {/* {this.state.articlesFiltered.map((article, key) => (
                   <div key={key}>
                     <div className="row">
                       <div className="col-lg-8 col-md-8 inline text-break">
@@ -192,7 +350,20 @@ class Dashboard extends Component {
                     </div>
                     <hr />
                   </div>
-                ))}
+                ))} */}
+                <ReactPaginate
+                  previousLabel={"prev"}
+                  nextLabel={"next"}
+                  breakLabel={"..."}
+                  breakClassName={"break-me"}
+                  pageCount={this.state.pageCount}
+                  marginPagesDisplayed={2}
+                  pageRangeDisplayed={5}
+                  onPageChange={this.handlePageChange}
+                  containerClassName={"pagination"}
+                  subContainerClassName={"pages pagination"}
+                  activeClassName={"active"}
+                />
               </div>
             </div>
             <div className="col-lg-4 col-lg-4">

@@ -50,7 +50,7 @@ class NavHeader extends Component {
     const { user } = this.state;
     return (
       <div>
-        <nav className="mb-1 navbar navbar-expand-lg navbar-loght bg-light">
+        <nav className="mb-1 navbar navbar-expand-lg navbar-light bg-light navcolor-light">
           <a className="navbar-brand nav-title" href="/dashboard">
             Structured Stories
           </a>
@@ -108,11 +108,11 @@ class NavHeader extends Component {
               </li> */}
             </ul>
             <ul className="navbar-nav ml-auto nav-flex-icons">
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <a className="nav-link waves-effect waves-light">
                   1 <FaEnvelope />
                 </a>
-              </li>
+              </li> */}
               <li className="nav-item dropdown">
                 <a
                   className="nav-link nav-title dropdown-toggle"

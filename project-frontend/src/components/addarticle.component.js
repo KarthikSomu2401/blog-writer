@@ -54,9 +54,10 @@ class AddArticle extends Component {
 
   handleCreate = (options) => {
     var article = { ...this.state.article };
-    article["tags"] = options;
+    article["tags"] = options || [];
     this.setState({ article });
   };
+  
   handleEditorChange = (text) => {
     var article = { ...this.state.article };
     article["article"] = text;

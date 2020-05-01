@@ -120,7 +120,7 @@ class EditProfile extends Component {
     return (
       <div>
         <NavHeader />
-        <div className="conatiner">
+        <div className="container">
           <h1> Edit Profile </h1>
           <form onSubmit={this.handleSubmit} encType="multipart/form-data">
             <div className="form-group">

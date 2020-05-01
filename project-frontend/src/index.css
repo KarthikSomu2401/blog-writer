@@ -32,9 +32,8 @@ body, html, .App, #root, .auth-wrapper {
   height: 100%;
 }
 
-.navbar-light {
-  background-color: #FFFFFF;
-  box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
+.navcolor-light {
+  background: linear-gradient(to right, #7696f7 0%, #00ffcc 100%)!important;
 }
 
 .auth-wrapper {
@@ -317,6 +316,40 @@ body, html, .App, #root, .auth-wrapper {
   font-size: 25em;
   color: rgba(238, 238, 238, 0.8);
   font-weight: normal;
+}
+
+.pagination {
+  margin: 15px auto;
+  display: flex;
+  list-style: none;
+  outline: none;
+}
+
+.pagination>.active>a {
+  background-color: #47ccde;
+  border-color: #47ccde;
+  color: #fff;
+}
+
+.pagination>li>a {
+  border: 1px solid #47ccde;
+  padding: 5px 10px;
+  outline: none;
+  cursor: pointer;
+}
+
+.pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus {
+  background-color: #47ccde;
+  border-color: #47ccde;
+  outline: none;
+}
+
+.pagination>li>a, .pagination>li>span {
+  color: #47ccde
+}
+
+.pagination>li:first-child>a, .pagination>li:first-child>span, .pagination>li:last-child>a, .pagination>li:last-child>span {
+  border-radius: unset
 }
 
 @media (max-width: 640px) {

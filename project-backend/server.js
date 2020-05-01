@@ -12,6 +12,9 @@ const article = require("./routes/article.route");
 const profile = require('./routes/profile.route');
 var morgan = require("morgan");
 var app = express();
+const swaggerUi = require("swagger-ui-express");
+var specs = require("./swagger");
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 const dBstore = new MongoDBStore({
   uri: envs.MONGO_URL,

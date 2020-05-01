@@ -5,11 +5,6 @@ const components = {
   DropdownIndicator: null,
 };
 
-const createOption = (label) => ({
-  label,
-  value: label,
-});
-
 class CreatableMulti extends Component {
   constructor(props) {
     super(props);

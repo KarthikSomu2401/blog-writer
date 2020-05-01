@@ -1,10 +1,13 @@
 const User = require("../models/user.model");
 const UserLog = require("../models/userlog.model");
+const Profile = require("../models/profile.model");
 
 const bcrypt = require("bcrypt");
 
 exports.create_user = function (req, res, next) {
   let user = new User(req.body);
+  let profile = new Profile({ email: req.body.emailId});
+  profile.save();
   user.save(function (err) {
     if (err) {
       return next(err);

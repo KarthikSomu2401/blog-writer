@@ -10,6 +10,21 @@ var sessionChecker = (req, res, next) => {
   next();
 };
 
+/**
+ * @swagger
+ * /article/all:
+ *   get:
+ *     tags:
+ *       - User
+ *     description: Returns all users
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: An array of users
+ *         schema:
+ *           $ref: '#/definitions/User'
+ */
 router
   .route("/all")
   .get(sessionChecker)

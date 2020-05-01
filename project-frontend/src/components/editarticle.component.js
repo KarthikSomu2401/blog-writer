@@ -35,7 +35,7 @@ class EditArticle extends Component {
 
   handleCreate = (options) => {
     var article = { ...this.state.article };
-    article["tags"] = options;
+    article["tags"] = options || [];
     this.setState({ article });
   };
   handleEditorChange = (text) => {
@@ -84,7 +84,11 @@ class EditArticle extends Component {
       .then((data) => {
         let articleObj = {};
         Object.keys(data).forEach(function (item) {
-          articleObj[item] = data[item];
+          if (data[item] === null && item === "tags") {
+            articleObj[item] = [];
+          } else {
+            articleObj[item] = data[item];
+          }
         });
         this.setState({ article: articleObj });
       })

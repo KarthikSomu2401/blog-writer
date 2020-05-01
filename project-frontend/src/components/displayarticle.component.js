@@ -35,7 +35,7 @@ class DisplayArticle extends Component {
         Object.keys(data).forEach(function (item) {
           articleObj[item] = data[item];
         });
-        console.log(articleObj);
+        //console.log(articleObj);
         this.setState({ article: articleObj });
       });
   }

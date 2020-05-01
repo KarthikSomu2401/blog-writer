@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import NavHeader from "./navbar.component";
-import ReactHtmlParser from "react-html-parser";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 import CreatableMulti from "./multiselect.component";
 
@@ -11,25 +10,24 @@ const createOption = (label) => ({
 });
 
 class EditProfile extends Component {
-  state = {
-    error: null,
-    isLoaded: false,
-    profile: {
-      _id:"",
-      email: Cookies.get("emailId"),
-      birthday: "",
-      city: "",
-      occupation: "",
-      //interest: "",
-      bio: "",
-     //image:"",
-     tags : [],
-     inputVlaue: "",
-    },
-  };
-
   constructor() {
     super();
+    this.state = {
+      error: null,
+      isLoaded: false,
+      profile: {
+        _id: "",
+        email: Cookies.get("emailId"),
+        birthday: "",
+        city: "",
+        occupation: "",
+        //interest: "",
+        bio: "",
+        //image:"",
+        tags: [],
+        inputVlaue: "",
+      },
+    };
     this.myChangeHandler = this.myChangeHandler.bind(this);
     this.handleCreate = this.handleCreate.bind(this);
     //this.handleEditorChange = this.handleEditorChange.bind(this);
@@ -40,10 +38,10 @@ class EditProfile extends Component {
   }
   handleCreate = (options) => {
     var profile = { ...this.state.profile };
-    profile["tags"] = options;
+    profile["tags"] = options || [];
     this.setState({ profile });
   };
- 
+
   handleInputChange = (inputValue) => {
     var profile = { ...this.state.profile };
     profile["inputValue"] = inputValue;
@@ -66,10 +64,11 @@ class EditProfile extends Component {
         event.preventDefault();
     }
   };
+
   myChangeHandler = (event) => {
     var profile = { ...this.state.profile };
-      let { name, value } = event.target;
-      profile[name] = value;
+    let { name, value } = event.target;
+    profile[name] = value;
     this.setState({ profile });
   };
 
@@ -79,11 +78,17 @@ class EditProfile extends Component {
     })
       .then((response) => response.json())
       .then((data) => {
-        let profileObj = {};
-        Object.keys(data).forEach(function (item) {
-          profileObj[item] = data[item];
-        });
-        this.setState({ profile: profileObj });
+        if (data.noprofile === undefined) {
+          let profileObj = {};
+          Object.keys(data).forEach(function (item) {
+            if (data[item] === null && item === "tags") {
+              profileObj[item] = [];
+            } else {
+              profileObj[item] = data[item];
+            }
+          });
+          this.setState({ profile: profileObj });
+        }
       });
   }
 
@@ -130,7 +135,7 @@ class EditProfile extends Component {
                 disabled
               />
             </div>
-             <div className="form-group">
+            <div className="form-group">
               <label htmlFor="birthday">Birthday</label>
               <input
                 type="text"
@@ -140,7 +145,7 @@ class EditProfile extends Component {
                 className="form-control"
                 placeholder="Birthday"
               />
-            </div> 
+            </div>
             <div className="form-group">
               <label htmlFor="city">City</label>
               <input
@@ -163,7 +168,7 @@ class EditProfile extends Component {
                 placeholder="Occupation"
               />
             </div>
-           {/*  <div className="form-group">
+            {/*  <div className="form-group">
               <label htmlFor="interest">Interest</label>
               <input
                 type="text"
@@ -185,7 +190,7 @@ class EditProfile extends Component {
                 placeholder="Say something about yourself"
               />
             </div>
-           {/* <div className="form-group">
+            {/* <div className="form-group">
               <label htmlFor="image">Image</label>
               <input
                 type="file"
@@ -214,7 +219,7 @@ class EditProfile extends Component {
                 className="form-control"
                 placeholder="Select/Create some tags you are interested in"
               />
-              </div>
+            </div>
             <button type="submit" className="btn btn-primary">
               Save
             </button>

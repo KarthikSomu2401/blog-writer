@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 // Require the controllers WHICH WE DID NOT CREATE YET!!
 const profile_controller = require("../controllers/profile.controller");
+//const uploadImage = require('../controllers/uploadImage');
+
 /* const multer = require('multer');
 //const util = require('util');
 //const GridFsStorage = require('multer-gridfs-storage');

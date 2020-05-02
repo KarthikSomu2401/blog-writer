@@ -23,9 +23,9 @@ const ProfileSchema = new Schema({
     bio:{
         type: String
     },
-    /* image:{
+     image:{
         type:String,
-    }, */
+    }, 
     tags: [],
 
 });

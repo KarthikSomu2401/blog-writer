@@ -1,6 +1,7 @@
 const Profile = require("../models/profile.model");
 const ArticleTags = require("../models/tag.model");
 const moongoose = require("mongoose");
+/* const upload = require("../middleware/upload"); */
 const bcrypt = require("bcrypt");
 
 const User = require("../models/user.model");
@@ -24,6 +25,22 @@ exports.display_profile = function (req, res) {
 };
 
 exports.edit_profile = function (req, res) {
+  /*   const uploadFile = async (req, res) => {
+    try {
+      await upload(req, res);
+  
+      console.log(req.file);
+      if (req.file == undefined) {
+        return res.send(`You must select a file.`);
+      }
+  else{
+    //const output = res.json({image : req.file})
+      return res.send(`File has been uploaded.`);
+    }} catch (error) {
+      console.log(error);
+      return res.send(`Error when trying upload image: ${error}`);
+    }
+  }; */
   //Get fields
   const profileFields = {};
   //profileFields.user = req.user.emailId;
@@ -54,7 +71,7 @@ exports.edit_profile = function (req, res) {
       profile.occupation = req.body.occupation;
       //profile.interest = req.body.interest;
       profile.bio = req.body.bio;
-      //profile.image = req.file.path;
+      profile.image = uploadFile(req.file);
       profile.tags = req.body.tags;
       //update ==>
       profile.save().then((profile) => res.json(profile));

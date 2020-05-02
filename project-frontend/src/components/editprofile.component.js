@@ -38,6 +38,10 @@ class EditProfile extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     //this.handleImageChange=this.handleImageChange(this);
   }
+  /*  handleImageChange= (event) =>{
+     console.log(events.target.Files[0])
+     console.log(events.target.Files[0].fileName)
+   } */
   handleCreate = (options) => {
     var changedProfile = { ...this.state.profile.profile };
     changedProfile["interests"] = options || [];
@@ -214,6 +218,7 @@ class EditProfile extends Component {
                 type="file"
                 name="image"
                 //value={this.state.profile.image}
+                 onChange={this.handleImageChange}
                 onChange={
                   ( e ) => {      
                     e.preventDefault();

@@ -4,14 +4,14 @@ import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import NavHeader from "./navbar.component";
 
-const Style = {
+/* const Style = {
   backgroundColor: "#eff0f2",
   paddingTop: "0px",
 };
 const Style2 = {
   width: "100%",
   height: "50%",
-};
+}; */
 
 class DisplayProfile extends Component {
   state = {
@@ -81,11 +81,11 @@ class DisplayProfile extends Component {
         <NavHeader />
 
         <Jumbotron>
-          <h2 style={{ textAlign: "center" }}>
+          <h2 /* style={{ textAlign: "center" }} */>
             Welcome {this.state.profile.profile.fullName}
           </h2>
           <hr />
-          <div style={Style} className="container col-md-2">
+          <div /* style={Style} */ className="container col-md-2">
             <h2>Information</h2>
             <p>
               <b>Email: </b>

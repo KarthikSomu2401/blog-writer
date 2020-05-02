@@ -49,14 +49,14 @@ return{
 });
 
 var uploadFile = multer({ storage: storage }).single("file");
-var uploadFilesMiddleware = util.promisify(uploadFile);
+var uploadFilesMiddleware = util.promisify(uploadFile); */
 
 var sessionChecker = (req, res, next) => {
     if (!req.cookies.emailId) {
       res.status(404).redirect("/sign-in");
     }
     next();
-  }; */
+  }; 
 
 router.get("/displayprofile", profile_controller.display_profile);
 router.post("/editprofile/:id", /* uploadFilesMiddleware *//* upload.single('image') */profile_controller.edit_profile);

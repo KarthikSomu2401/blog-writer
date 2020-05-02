@@ -17,15 +17,17 @@ class EditProfile extends Component {
       isLoaded: false,
       profile: {
         _id: "",
-        email: Cookies.get("emailId"),
-        birthday: "",
-        city: "",
-        occupation: "",
+        emailId: Cookies.get("emailId"),
+        profile: {
+          fullName: "",
+          birthday: "",
+          city: "",
+          occupation: "",
+          bio: "",
+          interests: [],
+          inputValue: "",
+        },
         //interest: "",
-        bio: "",
-        //image:"",
-        tags: [],
-        inputVlaue: "",
       },
     };
     this.myChangeHandler = this.myChangeHandler.bind(this);
@@ -37,39 +39,58 @@ class EditProfile extends Component {
     //this.handleImageChange=this.handleImageChange(this);
   }
   handleCreate = (options) => {
-    var profile = { ...this.state.profile };
-    profile["tags"] = options || [];
-    this.setState({ profile });
+    var changedProfile = { ...this.state.profile.profile };
+    changedProfile["interests"] = options || [];
+    this.setState({
+      profile: {
+        profile: changedProfile,
+      },
+    });
   };
 
   handleInputChange = (inputValue) => {
-    var profile = { ...this.state.profile };
-    profile["inputValue"] = inputValue;
-    this.setState({ profile });
+    var changedProfile = { ...this.state.profile.profile };
+    changedProfile["inputValue"] = inputValue;
+    this.setState({
+      profile: {
+        profile: changedProfile,
+      },
+    });
   };
 
   handleKeyDown = (event) => {
-    var profile = { ...this.state.profile };
-    if (!profile.inputValue) return;
+    var changedProfile = { ...this.state.profile.profile };
+    if (!changedProfile.inputValue) return;
     switch (event.key) {
       case "Enter":
       case "Tab":
         var newArt = {
           inputValue: "",
-          tags: [...profile.tags, createOption(profile.inputValue)],
+          interests: [
+            ...changedProfile.interests,
+            createOption(changedProfile.inputValue),
+          ],
         };
-        profile["inputValue"] = newArt.inputValue;
-        profile["tags"] = newArt.tags;
-        this.setState({ profile });
+        changedProfile["inputValue"] = newArt.inputValue;
+        changedProfile["interests"] = newArt.interests;
+        this.setState({
+          profile: {
+            profile: changedProfile,
+          },
+        });
         event.preventDefault();
     }
   };
 
   myChangeHandler = (event) => {
-    var profile = { ...this.state.profile };
+    var changedProfile = { ...this.state.profile.profile };
     let { name, value } = event.target;
-    profile[name] = value;
-    this.setState({ profile });
+    changedProfile[name] = value;
+    this.setState({
+      profile: {
+        profile: changedProfile,
+      },
+    });
   };
 
   componentDidMount() {
@@ -81,12 +102,9 @@ class EditProfile extends Component {
         if (data.noprofile === undefined) {
           let profileObj = {};
           Object.keys(data).forEach(function (item) {
-            if (data[item] === null && item === "tags") {
-              profileObj[item] = [];
-            } else {
-              profileObj[item] = data[item];
-            }
+            profileObj[item] = data[item];
           });
+          console.log(profileObj);
           this.setState({ profile: profileObj });
         }
       });
@@ -120,7 +138,7 @@ class EditProfile extends Component {
     return (
       <div>
         <NavHeader />
-        <div className="container">
+        <div className="container container-fluid">
           <h1> Edit Profile </h1>
           <form onSubmit={this.handleSubmit} encType="multipart/form-data">
             <div className="form-group">
@@ -128,7 +146,7 @@ class EditProfile extends Component {
               <input
                 type="text"
                 name="email"
-                value={this.state.profile.email}
+                value={this.state.profile.emailId}
                 className="form-control"
                 placeholder="Email"
                 onChange={this.myChangeHandler}
@@ -140,7 +158,7 @@ class EditProfile extends Component {
               <input
                 type="text"
                 name="birthday"
-                value={this.state.profile.birthday}
+                value={this.state.profile.profile.birthday}
                 onChange={this.myChangeHandler}
                 className="form-control"
                 placeholder="Birthday"
@@ -151,7 +169,7 @@ class EditProfile extends Component {
               <input
                 type="text"
                 name="city"
-                value={this.state.profile.city}
+                value={this.state.profile.profile.city}
                 onChange={this.myChangeHandler}
                 className="form-control"
                 placeholder="City"
@@ -162,7 +180,7 @@ class EditProfile extends Component {
               <input
                 type="text"
                 name="occupation"
-                value={this.state.profile.occupation}
+                value={this.state.profile.profile.occupation}
                 onChange={this.myChangeHandler}
                 className="form-control"
                 placeholder="Occupation"
@@ -184,7 +202,7 @@ class EditProfile extends Component {
               <input
                 type="text"
                 name="bio"
-                value={this.state.profile.bio}
+                value={this.state.profile.profile.bio}
                 onChange={this.myChangeHandler}
                 className="form-control"
                 placeholder="Say something about yourself"
@@ -211,8 +229,8 @@ class EditProfile extends Component {
               <label htmlFor="profileTags">Interest</label>
               <CreatableMulti
                 name="profileTags"
-                value={this.state.profile.tags}
-                inputValue={this.state.profile.inputValue}
+                value={this.state.profile.profile.interests}
+                inputValue={this.state.profile.profile.inputValue}
                 onChange={this.handleCreate}
                 onInputChange={this.handleInputChange}
                 onKeyDown={this.handleKeyDown}

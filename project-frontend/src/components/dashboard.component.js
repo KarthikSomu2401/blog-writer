@@ -33,7 +33,7 @@ class Dashboard extends Component {
             isLoaded: true,
             articles: result,
           });
-          this.paginationFilter();
+          this.paginationFilter(result);
         },
         (error) => {
           this.setState({
@@ -78,75 +78,11 @@ class Dashboard extends Component {
         return article;
       }
     });
-    var outputValues = filteredValues.map((article) => (
-      <React.Fragment key={article._id}>
-        <div className="row">
-          <div className="col-lg-8 col-md-8 inline text-break">
-            <Link
-              to={{
-                pathname: `/view/${article._id}`,
-              }}
-            >
-              <h2>{article.title}</h2>
-            </Link>
-            <span className="badge badge-secondary p-2">
-              {article.authorname}
-            </span>
-            <p>
-              <br />
-              Tags:
-              {article.tags.map((val, key) => (
-                <span key={key} className="badge badge-secondary p-2">
-                  {val.value}
-                </span>
-              ))}
-            </p>
-          </div>
-          <div className="col-lg-4 col-md-4 inline">
-            <span>
-              <Link
-                to={`/article/${article._id}`}
-                className="btn btn-outline-success"
-              >
-                Edit Article
-              </Link>
-            </span>
-            <span className="col-lg col-md">
-              <button
-                onClick={() => this.deleteAlert(article._id)}
-                className="btn btn-outline-danger"
-              >
-                Delete Article
-              </button>
-            </span>
-          </div>
-        </div>
-        <br />
-        <div className="row">
-          <div className="col-lg-12 col-md-12">
-            <div className="article-pre">
-              {ReactHtmlParser(article.article)}
-            </div>
-          </div>
-          <div className="col-lg-12 col-md-12">
-            <Link
-              className="read-more-bt"
-              to={{
-                pathname: `/view/${article._id}`,
-              }}
-            >
-              Full Article >
-            </Link>
-          </div>
-        </div>
-        <hr />
-      </React.Fragment>
-    ));
-    this.setState({ articlesFiltered: outputValues });
+    this.paginationFilter(filteredValues);
   };
 
-  paginationFilter = function () {
-    const data = this.state.articles;
+  paginationFilter = function (toBePaginatedArticles) {
+    const data = toBePaginatedArticles;
     const slice = data.slice(
       this.state.offset,
       this.state.offset + this.state.perPage
@@ -232,7 +168,7 @@ class Dashboard extends Component {
         offset: offset,
       },
       () => {
-        this.paginationFilter();
+        this.paginationFilter(this.state.articles);
       }
     );
   };

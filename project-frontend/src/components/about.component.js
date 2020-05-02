@@ -34,7 +34,7 @@ class About extends Component {
               desk. And we are here to support whenever you need us. Please meet
               our team members here to know about themselves in detail.
             </p>
-            <blockquote class="quote-card">
+            <blockquote className="quote-card">
               <h3>
                 Great thing in business are never done by one person. They're
                 done by team of people

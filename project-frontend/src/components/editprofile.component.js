@@ -36,6 +36,10 @@ class EditProfile extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     //this.handleImageChange=this.handleImageChange(this);
   }
+ /*  handleImageChange= (event) =>{
+    console.log(events.target.Files[0])
+    console.log(events.target.Files[0].fileName)
+  } */
   handleCreate = (options) => {
     var profile = { ...this.state.profile };
     profile["tags"] = options || [];
@@ -204,6 +208,7 @@ class EditProfile extends Component {
                     const files = [ ...e.target.files ];
                     fields.image.handleChange(files);
                   }}
+                  onChange={this.handleImageChange}
                 className="form-control"
               /> */}
             {/* </div> */}

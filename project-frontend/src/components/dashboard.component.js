@@ -17,6 +17,8 @@ class Dashboard extends Component {
       currentPage: 0,
       articles: [],
       articlesFiltered: [],
+      myArticles: [],
+      myArticlesFiltered: [],
     };
     this.handleArticleFilter = this.handleArticleFilter.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
@@ -34,6 +36,25 @@ class Dashboard extends Component {
             articles: result,
           });
           this.paginationFilter(result);
+        },
+        (error) => {
+          this.setState({
+            isLoaded: true,
+            error,
+          });
+        }
+      );
+    fetch(`${process.env.REACT_APP_API_URL}/articles/mine`, {
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          this.setState({
+            isLoaded: true,
+            myArticles: result,
+          });
+          this.myArticlesFilter(result);
         },
         (error) => {
           this.setState({
@@ -79,6 +100,61 @@ class Dashboard extends Component {
       }
     });
     this.paginationFilter(filteredValues);
+  };
+
+  myArticlesFilter = function (toBeFiltered) {
+    const slice = toBeFiltered.slice(0, 5);
+
+    const postData = slice.map((article) => (
+      <React.Fragment key={article._id}>
+        <div className="row">
+          <div className="col-lg-12 col-md-12 inline text-break">
+            <Link
+              to={{
+                pathname: `/view/${article._id}`,
+              }}
+            >
+              <h2>{article.title}</h2>
+            </Link>
+            <span className="badge badge-secondary p-2">
+              {article.authorname}
+            </span>
+            <p>
+              <br />
+              Tags:
+              {article.tags.map((val, key) => (
+                <span key={key} className="badge badge-secondary p-2">
+                  {val.value}
+                </span>
+              ))}
+            </p>
+          </div>
+        </div>
+        <br />
+        <div className="row">
+          <div className="col-lg-12 col-md-12">
+            <div className="article-pre">
+              {ReactHtmlParser(article.article)}
+            </div>
+          </div>
+          <div className="col-lg-12 col-md-12">
+            <Link
+              className="read-more-bt"
+              to={{
+                pathname: `/view/${article._id}`,
+              }}
+            >
+              Full Article >
+            </Link>
+          </div>
+        </div>
+        <hr />
+      </React.Fragment>
+    ));
+
+    this.setState({
+      myArticlesFiltered: postData,
+    });
   };
 
   paginationFilter = function (toBePaginatedArticles) {
@@ -213,80 +289,6 @@ class Dashboard extends Component {
                 </div>
                 <hr />
                 {this.state.articlesFiltered}
-                {/* {this.state.articlesFiltered.map((article, key) => (
-                  <div key={key}>
-                    <div className="row">
-                      <div className="col-lg-8 col-md-8 inline text-break">
-                        <Link
-                          to={{
-                            pathname: `/view/${article._id}`,
-                          }}
-                        >
-                          <h2>{article.title}</h2>
-                        </Link>
-                        <span className="badge badge-secondary p-2">
-                          {article.authorname}
-                        </span>
-                        {article.tags.length > 0 ? (
-                          <p>
-                            <br />
-                            Tags:
-                            {article.tags.map((val, key) => (
-                              <span
-                                key={key}
-                                className="badge badge-secondary p-2"
-                              >
-                                {val.value}
-                              </span>
-                            ))}
-                          </p>
-                        ) : (
-                          <p key={key}>
-                            <br />
-                            No tags
-                          </p>
-                        )}
-                      </div>
-                      <div className="col-lg-4 col-md-4 inline">
-                        <span>
-                          <Link
-                            to={`/article/${article._id}`}
-                            className="btn btn-outline-success"
-                          >
-                            Edit Article
-                          </Link>
-                        </span>
-                        <span className="col-lg col-md">
-                          <button
-                            onClick={() => this.deleteAlert(article._id)}
-                            className="btn btn-outline-danger"
-                          >
-                            Delete Article
-                          </button>
-                        </span>
-                      </div>
-                    </div>
-                    <br />
-                    <div className="row">
-                      <div className="col-lg-12 col-md-12">
-                        <div className="article-pre">
-                          {ReactHtmlParser(article.article)}
-                        </div>
-                      </div>
-                      <div className="col-lg-12 col-md-12">
-                        <Link
-                          className="read-more-bt"
-                          to={{
-                            pathname: `/view/${article._id}`,
-                          }}
-                        >
-                          Full Article >
-                        </Link>
-                      </div>
-                    </div>
-                    <hr />
-                  </div>
-                ))} */}
                 <ReactPaginate
                   previousLabel={"prev"}
                   nextLabel={"next"}
@@ -305,6 +307,9 @@ class Dashboard extends Component {
             <div className="col-lg-4 col-lg-4">
               <div className="jumbotron">
                 <h1>Your Interests</h1>
+                <p>(This articles are related to your interests)</p>
+                <hr />
+                {this.state.myArticlesFiltered}
               </div>
             </div>
           </div>

@@ -1,4 +1,5 @@
 const Article = require("../models/article.model");
+const User = require("../models/user.model");
 const ArticleTags = require("../models/tag.model");
 const ArticleLock = require("../models/locks.model");
 
@@ -8,6 +9,21 @@ exports.getall_articles = function (req, res, next) {
   Article.find()
     .then((article) => res.json(article))
     .catch((err) => res.status(400).json(`Error: ${err}`));
+};
+
+exports.get_my_articles = function (req, res, next) {
+  User.findOne({ emailId: req.cookies.emailId })
+    .populate("profile")
+    .then((user) => {
+      if (user.profile.interests !== undefined) {
+        Article.find({ tags: { $in: user.profile.interests } })
+          .sort({ createdAt: "desc" })
+          .then((article) => res.json(article))
+          .catch((err) => res.status(400).json(`Error: ${err}`));
+      } else {
+        res.status(404).send();
+      }
+    });
 };
 
 exports.article_add = function (req, res, next) {

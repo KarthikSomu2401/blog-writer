@@ -27,7 +27,6 @@ var sessionChecker = (req, res, next) => {
  *            $ref: '#definitions/Tags'
  */
 
-
 /**
  * @swagger
  * definitions:
@@ -58,6 +57,11 @@ router
   .route("/all")
   .get(sessionChecker)
   .get(article_controller.getall_articles);
+
+router
+  .route("/mine")
+  .get(sessionChecker)
+  .get(article_controller.get_my_articles);
 
 router.route("/add").get(sessionChecker).post(article_controller.article_add);
 

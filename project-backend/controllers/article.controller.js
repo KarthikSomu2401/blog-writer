@@ -17,54 +17,21 @@ exports.article_add = function (req, res, next) {
     authorname: req.body.authorname,
     tags: req.body.tags,
   });
-  /* var tags = req.body.tags;
-  tags.map((tag) => {
-    ArticleTags.findOne(tag).then((result) => {
-      if (result === undefined || result === null) {
-        var tagValue = new ArticleTags(tag);
-        var tagsave = tagValue.save();
-        newArticle.markModified("tags");
-        newArticle.tags.push(tagsave);
-      }
-    });
-  }); */
-  //saving to mongodb
   newArticle
     .save()
     .then(() => res.json("New article posted successfully"))
     .catch((err) => res.status(400).json(`Error : ${err}`));
 };
 
-/*
-User.findOne({
-  emailId: req.body.emailId,
-}).then(function (user) {
-  if (!user) {
-    res.status(404).send("User details not found");
-  } else {
-    bcrypt.compare(req.body.password, user.password, function (err, result) {
-      if (result == true) {
-        req.session.user = {
-          email: user.emailId,
-          name: user.fullName,
-        };
-*/
-exports.get_article_byId_search = function(req, res, next){
-
-Article.findById(req.params.id)
-.then(function(article){
-  res.json(article)
-})
-.catch((err) => res.status(400).json("Fail"));
-}
-
-
+exports.get_article_byId_search = function (req, res, next) {
+  Article.findById(req.params.id)
+    .then(function (article) {
+      res.json(article);
+    })
+    .catch((err) => res.status(400).json("Fail"));
+};
 
 exports.get_article_byId = function (req, res, next) {
-  //This is the original code
-  /*  Article.findById(req.params.id)
-    .then((article) => res.json(article))
-    .catch((err) => res.status(400).json(`Error : ${err}`));*/
   const lockFile = new ArticleLock({
     id: req.params.id,
     username: req.cookies.fullName,
@@ -81,7 +48,6 @@ exports.get_article_byId = function (req, res, next) {
               .save()
               .then(() => res.json(article), console.log("lock created"))
               .catch((err) => res.status(400).json(`Error : ${err}`));
-            
           })
           .catch((err) => res.status(400).json(`Error : ${err}`));
       } else {
@@ -90,18 +56,6 @@ exports.get_article_byId = function (req, res, next) {
     })
 
     .catch((err) => res.status(400).json(`Error : ${err}`));
-  /*ArticleLock.findById(req.params.id)
-    .then((article) => res.status(400).json("Article is in USE")
-    .catch(()=> Article.findById(req.params.id)
-      .then((article) => res.json(article),
-
-      lockFile
-      .save()
-      .then(()=> console.log("Lock Created"))
-      .catch(() => console.log("Lock Not Created")))
-        )
-          .catch((err) => res.status(400).json(`Error : ${err}`)))
-    .catch((err) => res.status(400).json(`Error : ${err}`))*/
 };
 
 exports.delete_article_byId = function (req, res, next) {
@@ -111,17 +65,6 @@ exports.delete_article_byId = function (req, res, next) {
 };
 
 exports.edit_article_byId = function (req, res, next) {
-  /* var finalTags = [];
-  var tags = req.body.tags;
-  tags.map((tag) => {
-    ArticleTags.findOne(tag).then((result) => {
-      if (result === undefined) {
-        finalTags.push(tag);
-      }
-    });
-  });
-  var finArticleTags = new ArticleTags(finalTags);
-  let tagsId = finArticleTags.save(); */
   Article.findById(req.params.id)
     .then((article) => {
       article.title = req.body.title;

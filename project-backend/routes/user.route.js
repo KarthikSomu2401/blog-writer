@@ -10,11 +10,6 @@ var sessionChecker = (req, res, next) => {
   }
   next();
 };
-// a simple test url to check that all of our files are communicating correctly.
-/* router.post("/createuser", user_controller.create_user);
-router.post("/loginuser", user_controller.login_user);
-router.post("/logoutuser", user_controller.logout_user);
-router.get("/userdetails", user_controller.user_details); */
 router.post("/createuser", user_controller.create_user);
 router.post("/loginuser", user_controller.login_user);
 

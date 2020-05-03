@@ -12,6 +12,13 @@ const options = {
       title: "Article API",
       version: "1.0.0",
     },
+    securitySchemes: {
+      cookieAuth: {
+        type: "apiKey",
+        in: "cookie",
+        name: "JSESSIONID",
+      },
+    },
   },
 };
 const specs = swaggerJsdoc(options);

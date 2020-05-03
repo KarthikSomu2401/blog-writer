@@ -12,18 +12,47 @@ var sessionChecker = (req, res, next) => {
 
 /**
  * @swagger
+ * definitions:
+ *   Article:
+ *     properties:
+ *       title:
+ *         type: string
+ *       article:
+ *         type: string
+ *       authorname:
+ *         type: string
+ *       tags:
+ *         type: array
+ *         items:
+ *            $ref: '#definitions/Tags'
+ */
+
+
+/**
+ * @swagger
+ * definitions:
+ *   Tags:
+ *     properties:
+ *       label:
+ *         type: string
+ *       value:
+ *         type: string
+ */
+
+/**
+ * @swagger
  * /article/all:
  *   get:
  *     tags:
- *       - User
- *     description: Returns all users
+ *       - Article
+ *     description: Returns all articles
  *     produces:
  *       - application/json
  *     responses:
  *       200:
- *         description: An array of users
+ *         description: An array of all articles
  *         schema:
- *           $ref: '#/definitions/User'
+ *           $ref: '#/definitions/Article'
  */
 router
   .route("/all")
@@ -36,10 +65,12 @@ router
   .route("/:id")
   .get(sessionChecker)
   .get(article_controller.get_article_byId);
+
 router
   .route("/search/:id")
   .get(sessionChecker)
   .get(article_controller.get_article_byId_search);
+
 router
   .route("/:id")
   .get(sessionChecker)

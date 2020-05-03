@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-// Require the controllers WHICH WE DID NOT CREATE YET!!
 const profile_controller = require("../controllers/profile.controller");
 /* const multer = require('multer');
 //const util = require('util');
@@ -52,13 +51,100 @@ var uploadFile = multer({ storage: storage }).single("file");
 var uploadFilesMiddleware = util.promisify(uploadFile); */
 
 var sessionChecker = (req, res, next) => {
-    if (!req.cookies.emailId) {
-      res.status(404).redirect("/sign-in");
-    }
-    next();
-  }; 
+  if (!req.cookies.emailId) {
+    res.status(404).redirect("/sign-in");
+  }
+  next();
+};
 
+/**
+ * @swagger
+ * definitions:
+ *   Tags:
+ *     properties:
+ *       label:
+ *         type: string
+ *       value:
+ *         type: string
+ */
+
+/**
+ * @swagger
+ * definitions:
+ *   Profile:
+ *     properties:
+ *       fullName:
+ *         type: string
+ *       birthday:
+ *         type: string
+ *       city:
+ *         type: string
+ *       occupation:
+ *         type: string
+ *       bio:
+ *         type: string
+ *       interests:
+ *         type: array
+ *         items:
+ *            $ref: '#definitions/Tags'
+ */
+
+/**
+ * @swagger
+ * definitions:
+ *   User:
+ *     properties:
+ *       emailId:
+ *         type: string
+ *       password:
+ *         type: string
+ *       profile:
+ *           $ref: '#/definitions/Profile'
+ */
+
+/**
+ * @swagger
+ * /profile/displayprofile:
+ *   get:
+ *     tags:
+ *       - User
+ *     description: Returns the details of current user
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Returns the details of current user
+ *         schema:
+ *           $ref: '#/definitions/User'
+ */
 router.get("/displayprofile", profile_controller.display_profile);
-router.post("/editprofile/:id", /* uploadFilesMiddleware *//* upload.single('image') */profile_controller.edit_profile);
+
+/**
+ * @swagger
+ * /profile/editprofile/{id}:
+ *   post:
+ *     tags:
+ *       - User
+ *     description: Returns the details of current user
+ *     parameters:
+ *       - name: id
+ *         required: true
+ *         in: path
+ *       - name: user
+ *         required: true
+ *         paramType: body
+ *         in: body
+ *         schema:
+ *           $ref: '#/definitions/User'
+ *     consumes:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully created
+ */
+router.post(
+  "/editprofile/:id",
+  /* uploadFilesMiddleware */ /* upload.single('image') */ profile_controller.edit_profile
+);
 //router.get("/test", profile_controller.test);
 module.exports = router;

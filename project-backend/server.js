@@ -22,7 +22,7 @@ const dBstore = new MongoDBStore({
 });
 
 app.use(cors());
-app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+app.use(cors({ credentials: true, origin: envs.CORS_URL }));
 app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

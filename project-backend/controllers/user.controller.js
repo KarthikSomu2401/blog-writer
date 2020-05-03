@@ -84,23 +84,4 @@ exports.logout_user = function (req, res, next) {
   delete req.session.user;
   delete req.cookies;
   res.status(200);
-  /* User.findOne({
-    emailId: req.body.emailId,
-  }).then(function (user) {
-    if (!user) {
-      res.status(404).send("User details not found");
-    } else {
-      bcrypt.compare(req.body.password, user.password, function (err, result) {
-        if (result == true) {
-          req.session.user = {
-            email: user.emailId,
-            name: user.fullName,
-          };
-          res.status(200).send("User details found");
-        } else {
-          res.status(401).send("Password mismatch");
-        }
-      });
-    }
-  }); */
 };

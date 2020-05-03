@@ -5,14 +5,16 @@ const ArticleTags = require("./tag.model");
 /**
  * @swagger
  * definitions:
- *   User:
+ *   Article:
  *     properties:
- *       fullName:
+ *       title:
  *         type: string
- *       emailId:
+ *       article:
  *         type: string
- *       password:
+ *       authorname:
  *         type: string
+ *       tags:
+ *         type: object
  */
 const ArticleSchema = new Schema({
   title: { type: String, required: true },

@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import Cookies from "js-cookie";
+
 import NavHeader from "./navbar.component";
 import {
   FaAddressCard,
@@ -8,6 +10,16 @@ import {
 } from "react-icons/fa";
 
 class About extends Component {
+
+
+  componentDidMount() {
+    if(!document.cookie){
+      window.alert("PLEASE LOG-IN TO CONTINUE");
+      window.location.pathname = "/sign-in";
+
+    }
+
+  }
   render() {
     const iconPath = process.env.PUBLIC_URL + "/images/";
     return (

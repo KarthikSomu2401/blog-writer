@@ -33,7 +33,17 @@ class AddArticle extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidMount() {
+    if(!document.cookie){
+      window.alert("PLEASE LOG-IN TO CONTINUE");
+      window.location.pathname = "/sign-in";
+
+    }
+
+  }
+
   handleSubmit(event) {
+
     event.preventDefault();
     const requestOptions = {
       method: "POST",
@@ -57,7 +67,7 @@ class AddArticle extends Component {
     article["tags"] = options || [];
     this.setState({ article });
   };
-  
+
   handleEditorChange = (text) => {
     var article = { ...this.state.article };
     article["article"] = text;

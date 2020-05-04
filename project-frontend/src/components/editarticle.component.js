@@ -21,6 +21,9 @@ class EditArticle extends Component {
       tags: [],
       inputValue: "",
     },
+    count: 0,
+    time: 30,
+    final:0,
   };
 
   constructor() {
@@ -73,8 +76,52 @@ class EditArticle extends Component {
     article[name] = value;
     this.setState({ article });
   };
+  componentWillUnmount() {
+    //clearInterval(exe)
 
+      window.removeEventListener("beforeunload", this.onUnload);
+  }
   componentDidMount() {
+
+    if(!document.cookie){
+      window.alert("PLEASE LOG-IN TO CONTINUE");
+      window.location.pathname = "/sign-in";
+
+    } 
+    window.addEventListener("beforeunload", this.onUnload);
+
+    var exe = setInterval(() => {
+      this.setState({
+        count: this.state.count++,
+        time: this.state.time - this.state.count,
+        final: convertSeconds(this.state)
+      })
+
+    },1000)
+
+    function convertSeconds(s) {
+    var min = Math.floor(s.time/60);
+    var sec = s.time%60;
+    if(s.time == s.count)
+    {
+      window.alert('Time Up!!!!!');
+
+      return(end())
+
+
+    }
+
+    return min + ':' + sec;
+    }
+
+    function end() {
+
+    clearInterval(exe);
+
+    window.location.pathname = "/dashboard";
+
+
+    }
     const { params } = this.props.match;
     this.articleId = params.id;
     fetch(`${process.env.REACT_APP_API_URL}/articles/${this.articleId}`, {
@@ -115,18 +162,23 @@ class EditArticle extends Component {
           resolve();
         });
         promise1.then(function (value) {
+        //    clearInterval(exe);
           window.location.pathname = "/dashboard";
         });
       });
   }
 
   render() {
+    const {count } = this.state
+    const {final } = this.state
+    const {time } = this.state
     return (
       <div>
         <NavHeader />
         <br />
         <div className="container container-fluid">
           <h1> Edit Article </h1>
+          <h3> Current Count: {final}</h3>
           <hr />
           <form onSubmit={this.handleSubmit} encType="multipart/form-data">
             <div className="form-group">

@@ -40,6 +40,13 @@ class DisplayProfile extends Component {
   componentDidMount() {
     //const { params } = this.props.match;
     //this.profileId = params.id;
+
+
+    if(!document.cookie){
+      window.alert("PLEASE LOG-IN TO CONTINUE");
+      window.location.pathname = "/sign-in";
+
+    }
     fetch(`${process.env.REACT_APP_API_URL}/profile/displayprofile`, {
       credentials: "include",
     })

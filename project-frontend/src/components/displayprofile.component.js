@@ -4,15 +4,15 @@ import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import NavHeader from "./navbar.component";
 
-const Style = {
+/* const Style = {
   backgroundColor: "#eff0f2",
   paddingTop: "0px",
 };
 const Style2 = {
   width: "100%",
   height: "50%",
-};
-
+}; */
+const iconPath = process.env.PUBLIC_URL + "/images/";
 class DisplayProfile extends Component {
   state = {
     error: null,
@@ -81,12 +81,14 @@ class DisplayProfile extends Component {
         <NavHeader />
 
         <Jumbotron>
-          <h2 style={{ textAlign: "center" }}>
+          <h2 /* style={{ textAlign: "center" }} */>
             Welcome {this.state.profile.profile.fullName}
           </h2>
           <hr />
-          <div style={Style} className="container col-md-2">
-            <h2>Information</h2>
+          <div /* style={Style} */ className="container col-md-3" id="profile">
+          <div id="profileavatar">
+          <img src={`${iconPath}user-profile.png`} alt="Avatar" /></div>
+            <h2 className="profileinfo">Information</h2>
             <p>
               <b>Email: </b>
               {this.state.profile.emailId}
@@ -122,9 +124,11 @@ class DisplayProfile extends Component {
               <b>Bio: </b>
               {this.state.profile.profile.bio}
             </p>
-            <Link to={{ pathname: `/editprofile/${this.state.profile._id}` }}>
+            <Button >
+            <Link className="profilebutton" to={{ pathname: `/editprofile/${this.state.profile._id}` }}>
               Edit Profile
             </Link>
+            </Button>
           </div>
           <hr />
         </Jumbotron>

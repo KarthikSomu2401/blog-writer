@@ -25,6 +25,12 @@ class Dashboard extends Component {
   }
 
   async componentDidMount() {
+    if(!document.cookie){
+      window.alert("PLEASE LOG-IN TO CONTINUE");
+      window.location.pathname = "/sign-in";
+
+    }
+
     fetch(`${process.env.REACT_APP_API_URL}/articles/all`, {
       credentials: "include",
     })

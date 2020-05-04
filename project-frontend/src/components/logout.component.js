@@ -24,6 +24,9 @@ export default class Logout extends Component {
     })
       .then(() => console.log('Logged Out successfully'))
       .catch(() => console.log("Logout Failed in logout component"))
+      
+          cookies.remove("emailId");
+          cookies.remove("fullName");
 
 
   }

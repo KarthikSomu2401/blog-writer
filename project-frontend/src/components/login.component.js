@@ -16,6 +16,15 @@ export default class Login extends Component {
     this.myChangeHandler = this.myChangeHandler.bind(this);
   }
 
+
+componentDidMount(){
+
+  if(document.cookie){
+
+    window.location.pathname = "/dashboard";
+
+  }
+}
   handleSubmit(event) {
     event.preventDefault();
     let formdata = {

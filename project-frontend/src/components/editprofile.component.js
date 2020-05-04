@@ -122,6 +122,7 @@ class EditProfile extends Component {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(this.state.profile),
+      
     };
     fetch(
       `${process.env.REACT_APP_API_URL}/profile/editprofile/${this.profileId}`,
@@ -219,7 +220,7 @@ class EditProfile extends Component {
                 name="image"
                 //value={this.state.profile.image}
                 onChange={
-                  ( e ) => {      
+                  ( e ) => {
                     e.preventDefault();
                     const { fields } = this.props;
                     // convert files to an array

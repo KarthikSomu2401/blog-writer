@@ -24,6 +24,13 @@ class DisplayArticle extends Component {
   }
 
   componentDidMount() {
+
+
+    if(!document.cookie){
+      window.alert("PLEASE LOG-IN TO CONTINUE");
+      window.location.pathname = "/sign-in";
+
+    }
     const { params } = this.props.match;
     this.articleId = params.id;
     fetch(`${process.env.REACT_APP_API_URL}/articles/search/${this.articleId}`, {

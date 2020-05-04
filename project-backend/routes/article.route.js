@@ -58,28 +58,147 @@ router
   .get(sessionChecker)
   .get(article_controller.getall_articles);
 
+/**
+ * @swagger
+ * /article/mine:
+ *   get:
+ *     tags:
+ *       - Article
+ *     description: Returns all my interested articles
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: An array of all my interested articles
+ *         schema:
+ *           $ref: '#/definitions/Article'
+ */
 router
   .route("/mine")
   .get(sessionChecker)
   .get(article_controller.get_my_articles);
 
+/**
+ * @swagger
+ * /article/add:
+ *   post:
+ *     tags:
+ *       - Article
+ *     description: Returns all my interested articles
+ *     consumes:
+ *       - application/json
+ *     parameters:
+ *       - name: article
+ *         required: true
+ *         paramType: body
+ *         in: body
+ *         schema:
+ *           $ref: '#/definitions/Article'
+ *     responses:
+ *       200:
+ *         description: Successfully Updated
+ *         schema:
+ *           $ref: '#/definitions/Article'
+ */
 router.route("/add").get(sessionChecker).post(article_controller.article_add);
 
+/**
+ * @swagger
+ * /article/:id:
+ *   get:
+ *     tags:
+ *       - Article
+ *     description: Returns all my interested articles
+ *     consumes:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         required: true
+ *         in: path
+ *     responses:
+ *       200:
+ *         description: An array of all my interested articles
+ *         schema:
+ *           $ref: '#/definitions/Article'
+ */
 router
   .route("/:id")
   .get(sessionChecker)
   .get(article_controller.get_article_byId);
 
+/**
+ * @swagger
+ * /article/search/:id:
+ *   get:
+ *     tags:
+ *       - Article
+ *     description: Returns all my interested articles
+ *     consumes:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         required: true
+ *         in: path
+ *     responses:
+ *       200:
+ *         description: An array of all my interested articles
+ *         schema:
+ *           $ref: '#/definitions/Article'
+ */
 router
   .route("/search/:id")
   .get(sessionChecker)
   .get(article_controller.get_article_byId_search);
 
+/**
+ * @swagger
+ * /article/:id:
+ *   delete:
+ *     tags:
+ *       - Article
+ *     description: Returns all my interested articles
+ *     consumes:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         required: true
+ *         in: path
+ *     responses:
+ *       200:
+ *         description: An array of all my interested articles
+ *         schema:
+ *           $ref: '#/definitions/Article'
+ */
 router
   .route("/:id")
   .get(sessionChecker)
   .delete(article_controller.delete_article_byId);
 
+/**
+ * @swagger
+ * /article/update/:id:
+ *   post:
+ *     tags:
+ *       - Article
+ *     description: Returns all my interested articles
+ *     consumes:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         required: true
+ *         in: path
+ *       - name: article
+ *         required: true
+ *         paramType: body
+ *         in: body
+ *         schema:
+ *           $ref: '#/definitions/Article'
+ *     responses:
+ *       200:
+ *         description: An array of all my interested articles
+ *         schema:
+ *           $ref: '#/definitions/Article'
+ */
 router
   .route("/update/:id")
   .get(sessionChecker)

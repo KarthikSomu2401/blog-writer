@@ -1,6 +1,7 @@
 const Profile = require("../models/profile.model");
 const ArticleTags = require("../models/tag.model");
 const User = require("../models/user.model");
+const UserLog = require("../models/userlog.model");
 
 exports.display_profile = function (req, res) {
   const errors = {};
@@ -17,6 +18,14 @@ exports.display_profile = function (req, res) {
 };
 
 exports.edit_profile = async function (req, res) {
+
+  const user10 = new UserLog({
+    emailId: req.cookies.emailId,
+    fullName: req.cookies.fullName,
+    timestamp: new Date(),
+    action: "EDITED PROFILE",
+  });
+  
   console.log(req.body.profile.interests);
   User.findById(req.params.id)
     .then((user) => {
@@ -31,7 +40,13 @@ exports.edit_profile = async function (req, res) {
         new: true,
       }).then((profileNew) => {
         user.profile = profileNew;
-        user.save().then((user) => res.json(user));
+        user.save().then((user) =>
+
+        user10.save()
+        .then(() =>res.json(user))
+        .catch((err) => res.status(400).json(`Error: ${err}`))
+
+        );
       });
     })
     .catch((err) => res.status(400).json(`Error: ${err}`));

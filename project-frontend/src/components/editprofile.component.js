@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import NavHeader from "./navbar.component";
 import Cookies from "js-cookie";
-
+import jwt_decode from "jwt-decode";
 import CreatableMulti from "./multiselect.component";
 
 const createOption = (label) => ({
@@ -17,7 +17,7 @@ class EditProfile extends Component {
       isLoaded: false,
       profile: {
         _id: "",
-        emailId: Cookies.get("emailId"),
+        emailId: "",
         profile: {
           fullName: "",
           birthday: "",
@@ -38,7 +38,7 @@ class EditProfile extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     //this.handleImageChange=this.handleImageChange(this);
   }
- /*  handleImageChange= (event) =>{
+  /*  handleImageChange= (event) =>{
     console.log(events.target.Files[0])
     console.log(events.target.Files[0].fileName)
   } */
@@ -98,9 +98,26 @@ class EditProfile extends Component {
   };
 
   componentDidMount() {
-    fetch(`${process.env.REACT_APP_API_URL}/profile/displayprofile`, {
-      credentials: "include",
-    })
+    if (!document.cookie) {
+      window.alert("PLEASE LOG-IN TO CONTINUE");
+      window.location.pathname = "/sign-in";
+    }
+    setTimeout(async () => {
+      var decode = await jwt_decode(Cookies.get("token"));
+      var userChanges = { ...this.state.profile };
+      userChanges.emailId = decode.email;
+      this.setState({ profile: userChanges, isLoaded: true });
+    }, 500);
+    const requestOptions = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+    };
+    fetch(
+      `${process.env.REACT_APP_API_URL}/profile/displayprofile`,
+      requestOptions
+    )
       .then((response) => response.json())
       .then((data) => {
         if (data.noprofile === undefined) {
@@ -120,9 +137,11 @@ class EditProfile extends Component {
     event.preventDefault();
     const requestOptions = {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
       body: JSON.stringify(this.state.profile),
-      
     };
     fetch(
       `${process.env.REACT_APP_API_URL}/profile/editprofile/${this.profileId}`,

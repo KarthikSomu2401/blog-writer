@@ -7,8 +7,6 @@ import { Link } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 const cookies = new Cookies();
 export default class Logout extends Component {
-
-
   constructor(props) {
     super(props);
     this.state = {
@@ -18,22 +16,20 @@ export default class Logout extends Component {
     };
   }
   async componentDidMount() {
+    const requestOptions = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+    };
+    fetch(`${process.env.REACT_APP_API_URL}/users/logoutuser`, requestOptions)
+      .then(() => console.log("Logged Out successfully"))
+      .catch(() => console.log("Logout Failed in logout component"));
 
-    fetch(`${process.env.REACT_APP_API_URL}/users/logoutuser`, {
-      credentials: "include",
-    })
-      .then(() => console.log('Logged Out successfully'))
-      .catch(() => console.log("Logout Failed in logout component"))
-      
-          cookies.remove("emailId");
-          cookies.remove("fullName");
-
-
+    cookies.remove("token");
   }
 
   render() {
-    return (
-      window.location.pathname = "/sign-in"
-         );
+    return (window.location.pathname = "/sign-in");
   }
 }

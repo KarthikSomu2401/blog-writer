@@ -3,6 +3,7 @@ import NavHeader from "./navbar.component";
 import Cookies from "js-cookie";
 import RichTextEditor from "./richtexteditor.component";
 import CreatableMulti from "./multiselect.component";
+import jwt_decode from "jwt-decode";
 
 const createOption = (label) => ({
   label,
@@ -15,7 +16,7 @@ class AddArticle extends Component {
     isLoaded: false,
     article: {
       _id: "",
-      authorname: Cookies.get("fullName"),
+      authorname: "",
       title: "",
       article: "",
       tags: [],
@@ -34,20 +35,27 @@ class AddArticle extends Component {
   }
 
   componentDidMount() {
-    if(!document.cookie){
+    if (!document.cookie) {
       window.alert("PLEASE LOG-IN TO CONTINUE");
       window.location.pathname = "/sign-in";
-
+    } else {
+      setTimeout(async () => {
+        var decode = await jwt_decode(Cookies.get("token"));
+        var userChanges = { ...this.state.article };
+        userChanges.authorname = decode.name;
+        this.setState({ article: userChanges, isLoaded: true });
+      }, 500);
     }
-
   }
 
   handleSubmit(event) {
-
     event.preventDefault();
     const requestOptions = {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
       body: JSON.stringify(this.state.article),
     };
     fetch(`${process.env.REACT_APP_API_URL}/articles/add`, requestOptions)

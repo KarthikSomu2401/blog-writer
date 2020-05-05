@@ -3,13 +3,7 @@ const router = express.Router();
 
 // Require the controllers WHICH WE DID NOT CREATE YET!!
 const user_controller = require("../controllers/user.controller");
-
-var sessionChecker = (req, res, next) => {
-  if (!req.cookies.emailId) {
-    res.status(404).redirect("/sign-in");
-  }
-  next();
-};
+let middleware = require("../handlers/middleware");
 
 /**
  * @swagger
@@ -26,16 +20,23 @@ var sessionChecker = (req, res, next) => {
  *         paramType: body
  *         in: body
  *         schema:
- *           $ref: '#/definitions/User'
+ *            type: object
+ *            properties:
+ *              emailId:
+ *                  type: string
+ *              password:
+ *                  type: string
+ *              fullName:
+ *                  type: string
  *     responses:
  *       200:
  *         description: User Created Successfully
  */
-router.post("/createuser", user_controller.create_user);
+router.route("/createuser").post(user_controller.create_user);
 
 /**
  * @swagger
- * /users/login:
+ * /users/loginuser:
  *   post:
  *     tags:
  *       - Auth
@@ -48,17 +49,24 @@ router.post("/createuser", user_controller.create_user);
  *         paramType: body
  *         in: body
  *         schema:
- *           $ref: '#/definitions/User'
+ *            type: object
+ *            properties:
+ *              emailId:
+ *                  type: string
+ *              password:
+ *                  type: string
  *     responses:
  *       200:
  *         description: User LoggedIn Successfully
  */
-router.post("/loginuser", user_controller.login_user);
+router.route("/loginuser").post(user_controller.login_user);
 
 /**
  * @swagger
  * /users/logoutuser:
  *   get:
+ *     security:
+ *      - Bearer: []
  *     tags:
  *       - Auth
  *     description: Logout User
@@ -70,7 +78,7 @@ router.post("/loginuser", user_controller.login_user);
  */
 router
   .route("/logoutuser")
-  .get(sessionChecker)
+  .get(middleware.checkToken)
   .get(user_controller.logout_user);
 
 module.exports = router;

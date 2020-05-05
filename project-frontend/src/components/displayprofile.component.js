@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Image, Jumbotron, Button } from "react-bootstrap";
+import { Jumbotron, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import NavHeader from "./navbar.component";
+import jwt_decode from "jwt-decode";
 
 /* const Style = {
   backgroundColor: "#eff0f2",
@@ -19,7 +20,7 @@ class DisplayProfile extends Component {
     isLoaded: false,
     profile: {
       _id: "",
-      emailId: Cookies.get("emailId"),
+      emailId: "",
       profile: {
         fullName: "",
         birthday: "",
@@ -41,15 +42,26 @@ class DisplayProfile extends Component {
     //const { params } = this.props.match;
     //this.profileId = params.id;
 
-
-    if(!document.cookie){
+    if (!document.cookie) {
       window.alert("PLEASE LOG-IN TO CONTINUE");
       window.location.pathname = "/sign-in";
-
     }
-    fetch(`${process.env.REACT_APP_API_URL}/profile/displayprofile`, {
-      credentials: "include",
-    })
+    setTimeout(async () => {
+      var decode = await jwt_decode(Cookies.get("token"));
+      var userChanges = { ...this.state.profile };
+      userChanges.emailId = decode.email;
+      this.setState({ profile: userChanges, isLoaded: true });
+    }, 500);
+    const requestOptions = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+    };
+    fetch(
+      `${process.env.REACT_APP_API_URL}/profile/displayprofile`,
+      requestOptions
+    )
       .then((response) => response.json())
       .then((data) => {
         let profileObj = {};
@@ -93,8 +105,9 @@ class DisplayProfile extends Component {
           </h2>
           <hr />
           <div /* style={Style} */ className="container col-md-3" id="profile">
-          <div id="profileavatar">
-          <img src={`${iconPath}user-profile.png`} alt="Avatar" /></div>
+            <div id="profileavatar">
+              <img src={`${iconPath}user-profile.png`} alt="Avatar" />
+            </div>
             <h2 className="profileinfo">Information</h2>
             <p>
               <b>Email: </b>
@@ -131,10 +144,13 @@ class DisplayProfile extends Component {
               <b>Bio: </b>
               {this.state.profile.profile.bio}
             </p>
-            <Button >
-            <Link className="profilebutton" to={{ pathname: `/editprofile/${this.state.profile._id}` }}>
-              Edit Profile
-            </Link>
+            <Button>
+              <Link
+                className="profilebutton"
+                to={{ pathname: `/editprofile/${this.state.profile._id}` }}
+              >
+                Edit Profile
+              </Link>
             </Button>
           </div>
           <hr />

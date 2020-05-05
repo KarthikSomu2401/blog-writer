@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import { FaSearch, FaEnvelope, FaBars } from "react-icons/fa";
+import { FaBars } from "react-icons/fa";
 import Cookies from "js-cookie";
+import jwt_decode from "jwt-decode";
+
 /* import {
   NavDropdown,
   Nav,
@@ -18,32 +20,19 @@ class NavHeader extends Component {
       error: null,
       isLoaded: false,
       user: {
-        name: Cookies.get("fullName"),
-        email: Cookies.get("emailId"),
+        name: "",
       },
     };
   }
 
-  /* async componentDidMount() {
-    fetch(`${process.env.REACT_APP_API_URL}/users/userdetails`, {
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          this.setState({
-            isLoaded: true,
-            user: result,
-          });
-        },
-        (error) => {
-          this.setState({
-            isLoaded: true,
-            error,
-          });
-        }
-      );
-  } */
+  componentDidMount() {
+    setTimeout(async () => {
+      var decode = await jwt_decode(Cookies.get("token"));
+      var userChanges = { ...this.state.user };
+      userChanges.name = decode.name;
+      this.setState({ user: userChanges, isLoaded: true });
+    }, 500);
+  }
 
   render() {
     const iconPath = process.env.PUBLIC_URL + "/images/";
@@ -63,7 +52,6 @@ class NavHeader extends Component {
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            {/* <span className="navbar-toggler-icon"></span> */}
             <FaBars />
           </span>
           <div
@@ -81,38 +69,8 @@ class NavHeader extends Component {
                   Add Article
                 </a>
               </li>
-              {/* <li className="nav-item">
-                <a className="nav-link nav-title" href="#">
-                  Features
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link nav-title" href="#">
-                  Pricing
-                </a>
-              </li> */}
-              {/* <li className="nav-item">
-                <span className="searchBox">
-                  <input
-                    className="searchInput"
-                    type="text"
-                    name=""
-                    placeholder="Search"
-                  />
-                  <button className="searchButton" href="#">
-                    <i className="material-icons">
-                      <FaSearch />
-                    </i>
-                  </button>
-                </span>
-              </li> */}
             </ul>
             <ul className="navbar-nav ml-auto nav-flex-icons">
-              {/* <li className="nav-item">
-                <a className="nav-link waves-effect waves-light">
-                  1 <FaEnvelope />
-                </a>
-              </li> */}
               <li className="nav-item dropdown">
                 <a
                   className="nav-link nav-title dropdown-toggle"

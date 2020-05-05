@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const profile_controller = require("../controllers/profile.controller");
+let middleware = require("../handlers/middleware");
 /* const multer = require('multer');
 //const util = require('util');
 //const GridFsStorage = require('multer-gridfs-storage');
@@ -49,13 +50,6 @@ return{
 
 var uploadFile = multer({ storage: storage }).single("file");
 var uploadFilesMiddleware = util.promisify(uploadFile); */
-
-var sessionChecker = (req, res, next) => {
-  if (!req.cookies.emailId) {
-    res.status(404).redirect("/sign-in");
-  }
-  next();
-};
 
 /**
  * @swagger
@@ -106,6 +100,8 @@ var sessionChecker = (req, res, next) => {
  * @swagger
  * /profile/displayprofile:
  *   get:
+ *     security:
+ *      - Bearer: []
  *     tags:
  *       - User
  *     description: Returns the details of current user
@@ -117,21 +113,28 @@ var sessionChecker = (req, res, next) => {
  *         schema:
  *           $ref: '#/definitions/User'
  */
-router.get("/displayprofile", profile_controller.display_profile);
+router
+  .route("/displayprofile")
+  .get(middleware.checkToken)
+  .get(profile_controller.display_profile);
 
 /**
  * @swagger
  * /profile/editprofile/{id}:
- *   post:
+ *   put:
+ *     security:
+ *      - Bearer: []
  *     tags:
  *       - User
  *     description: Returns the details of current user
  *     parameters:
  *       - name: id
  *         required: true
+ *         type: string
  *         in: path
  *       - name: user
  *         required: true
+ *         type: object
  *         paramType: body
  *         in: body
  *         schema:
@@ -140,11 +143,11 @@ router.get("/displayprofile", profile_controller.display_profile);
  *       - application/json
  *     responses:
  *       200:
- *         description: Successfully created
+ *         description: Successfully Updated
  */
-router.post(
-  "/editprofile/:id",
-  /* uploadFilesMiddleware */ /* upload.single('image') */ profile_controller.edit_profile
-);
-//router.get("/test", profile_controller.test);
+router
+  .route("/editprofile/:id")
+  .get(middleware.checkToken)
+  .put(profile_controller.edit_profile);
+/* uploadFilesMiddleware router.get("/test", profile_controller.test);upload.single('image') router.get("/test", profile_controller.test);*/
 module.exports = router;

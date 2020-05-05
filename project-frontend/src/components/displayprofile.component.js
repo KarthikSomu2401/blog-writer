@@ -125,12 +125,12 @@ class DisplayProfile extends Component {
               <b>Occupation: </b>
               {this.state.profile.profile.occupation}
             </p>
-            {this.state.profile.profile.tags ? (
-              this.state.profile.profile.tags.length > 0 ? (
+            {this.state.profile.profile.interests ? (
+              this.state.profile.profile.interests.length > 0 ? (
                 <p>
                   <b>Interests:</b>
                   {""}
-                  {this.state.profile.profile.tags
+                  {this.state.profile.profile.interests
                     .map((val) => val.value)
                     .join(", ")}
                 </p>

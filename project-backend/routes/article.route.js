@@ -109,7 +109,7 @@ router
  */
 router
   .route("/add")
-  .get(middleware.checkToken)
+  .post(middleware.checkToken)
   .post(article_controller.article_add);
 
 /**
@@ -187,7 +187,7 @@ router
  */
 router
   .route("/:id")
-  .get(middleware.checkToken)
+  .delete(middleware.checkToken)
   .delete(article_controller.delete_article_byId);
 
 /**
@@ -219,7 +219,7 @@ router
  */
 router
   .route("/update/:id")
-  .get(middleware.checkToken)
+  .post(middleware.checkToken)
   .post(article_controller.edit_article_byId);
 
 module.exports = router;

@@ -121,7 +121,7 @@ router
 /**
  * @swagger
  * /profile/editprofile/{id}:
- *   put:
+ *   post:
  *     security:
  *      - Bearer: []
  *     tags:
@@ -134,8 +134,6 @@ router
  *         in: path
  *       - name: user
  *         required: true
- *         type: object
- *         paramType: body
  *         in: body
  *         schema:
  *           $ref: '#/definitions/User'
@@ -147,7 +145,7 @@ router
  */
 router
   .route("/editprofile/:id")
-  .get(middleware.checkToken)
-  .put(profile_controller.edit_profile);
+  .post(middleware.checkToken)
+  .post(profile_controller.edit_profile);
 /* uploadFilesMiddleware router.get("/test", profile_controller.test);upload.single('image') router.get("/test", profile_controller.test);*/
 module.exports = router;

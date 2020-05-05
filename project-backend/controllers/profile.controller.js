@@ -3,10 +3,10 @@ const ArticleTags = require("../models/tag.model");
 const User = require("../models/user.model");
 const UserLog = require("../models/userlog.model");
 
-exports.display_profile = function (req, res) {
+exports.display_profile = function (req, res, next) {
   const errors = {};
-  User.findOne({ emailId: req.cookies.emailId }, { password: 0 })
-    .populate({ path: "profile" })
+  User.findOne({ emailId: req.decoded.email }, { password: 0 })
+    .populate({ path: "profile", model: "Profile" })
     .then((user) => {
       if (!user) {
         errors.noprofile = "There no profile for the user";
@@ -17,16 +17,15 @@ exports.display_profile = function (req, res) {
     .catch((err) => res.status(404).json(err));
 };
 
-exports.edit_profile = async function (req, res) {
-
+exports.edit_profile = function (req, res, next) {
+  //console.log(req);
   const user10 = new UserLog({
-    emailId: req.cookies.emailId,
-    fullName: req.cookies.fullName,
+    emailId: req.decoded.email,
+    fullName: req.decoded.name,
     timestamp: new Date(),
     action: "EDITED PROFILE",
   });
-  
-  console.log(req.body.profile.interests);
+
   User.findById(req.params.id)
     .then((user) => {
       var profile = {};
@@ -41,11 +40,10 @@ exports.edit_profile = async function (req, res) {
       }).then((profileNew) => {
         user.profile = profileNew;
         user.save().then((user) =>
-
-        user10.save()
-        .then(() =>res.json(user))
-        .catch((err) => res.status(400).json(`Error: ${err}`))
-
+          user10
+            .save()
+            .then(() => res.json(user))
+            .catch((err) => res.status(400).json(`Error: ${err}`))
         );
       });
     })

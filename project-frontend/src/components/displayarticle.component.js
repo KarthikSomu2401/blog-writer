@@ -3,6 +3,7 @@ import NavHeader from "./navbar.component";
 import ReactHtmlParser from "react-html-parser";
 import { Link } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
+import Cookies from "js-cookie";
 
 class DisplayArticle extends Component {
   articleId = "";
@@ -24,18 +25,22 @@ class DisplayArticle extends Component {
   }
 
   componentDidMount() {
-
-
-    if(!document.cookie){
+    if (!document.cookie) {
       window.alert("PLEASE LOG-IN TO CONTINUE");
       window.location.pathname = "/sign-in";
-
     }
     const { params } = this.props.match;
     this.articleId = params.id;
-    fetch(`${process.env.REACT_APP_API_URL}/articles/search/${this.articleId}`, {
-      credentials: "include",
-    })
+    const requestOptions = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+    };
+    fetch(
+      `${process.env.REACT_APP_API_URL}/articles/search/${this.articleId}`,
+      requestOptions
+    )
       .then((response) => response.json())
       .then((data) => {
         let articleObj = {};
@@ -67,7 +72,10 @@ class DisplayArticle extends Component {
   deleteArticle(articleId) {
     const requestOptions = {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
     };
     fetch(
       `${process.env.REACT_APP_API_URL}/articles/${articleId}`,
@@ -87,7 +95,10 @@ class DisplayArticle extends Component {
     event.preventDefault();
     const requestOptions = {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
       body: JSON.stringify(this.state.article),
     };
     fetch(

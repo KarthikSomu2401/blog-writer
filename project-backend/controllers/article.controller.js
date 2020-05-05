@@ -4,7 +4,6 @@ const ArticleTags = require("../models/tag.model");
 const ArticleLock = require("../models/locks.model");
 const UserLog = require("../models/userlog.model");
 
-
 const bcrypt = require("bcrypt");
 
 exports.getall_articles = function (req, res, next) {
@@ -14,7 +13,7 @@ exports.getall_articles = function (req, res, next) {
 };
 
 exports.get_my_articles = function (req, res, next) {
-  User.findOne({ emailId: req.cookies.emailId })
+  User.findOne({ emailId: req.decoded.email })
     .populate("profile")
     .then((user) => {
       if (user.profile.interests !== undefined) {
@@ -37,21 +36,20 @@ exports.article_add = function (req, res, next) {
   });
 
   const user6 = new UserLog({
-
     fullName: req.body.authorname,
     timestamp: new Date(),
     action: "ARTICLE ADDITION",
     articleTitle: req.body.title,
-
-
   });
   newArticle
     .save()
-    .then(() => user6.save()
-    .then(() =>  res.json("New article posted successfully"))
-  .catch((err) => res.status(400).json(`Error : ${err}`)))
+    .then(() =>
+      user6
+        .save()
+        .then(() => res.json("New article posted successfully"))
+        .catch((err) => res.status(400).json(`Error : ${err}`))
+    )
     .catch((err) => res.status(400).json(`Error : ${err}`));
-
 };
 
 exports.get_article_byId_search = function (req, res, next) {
@@ -65,14 +63,14 @@ exports.get_article_byId_search = function (req, res, next) {
 exports.get_article_byId = function (req, res, next) {
   const lockFile = new ArticleLock({
     id: req.params.id,
-    emailId: req.cookies.emailId,
+    emailId: req.decoded.email,
     timestamp: new Date(),
   });
 
   ArticleLock.findOne({ id: req.params.id })
     .then(function (article_lock) {
       if (!article_lock) {
-        console.log(req.cookies.fullName);
+        console.log(req.decoded.name);
         Article.findById(req.params.id)
           .then(function (article) {
             lockFile
@@ -90,32 +88,28 @@ exports.get_article_byId = function (req, res, next) {
 };
 
 exports.delete_article_byId = function (req, res, next) {
-
   const user7 = new UserLog({
-
     timestamp: new Date(),
     action: "ARTICLE DELETION",
     articleId: req.params.id,
   });
   Article.findByIdAndDelete(req.params.id)
     .then(() =>
-     user7.save()
-     .then(() => res.json("Article is deleted"))
-   .catch((err) => res.status(400).json(`Error: ${err}`)))
+      user7
+        .save()
+        .then(() => res.json("Article is deleted"))
+        .catch((err) => res.status(400).json(`Error: ${err}`))
+    )
     .catch((err) => res.status(400).json(`Error: ${err}`));
-
 };
 
 exports.edit_article_byId = function (req, res, next) {
-
   const user5 = new UserLog({
-
     fullName: req.body.authorname,
     timestamp: new Date(),
     action: "ARTICLE UPDATION",
     articleId: req.params.id,
     articleTitle: req.body.title,
-
   });
   Article.findById(req.params.id)
     .then((article) => {
@@ -128,15 +122,15 @@ exports.edit_article_byId = function (req, res, next) {
         .save()
         .then(() =>
           ArticleLock.findOneAndRemove({ id: req.params.id })
-            .then(() =>  user5
-            .save()
-            .then(() =>  res.json("Lock DELETED and Log Updated"))
-            .catch(() => console.log("Failed 1")))
+            .then(() =>
+              user5
+                .save()
+                .then(() => res.json("Lock DELETED and Log Updated"))
+                .catch(() => console.log("Failed 1"))
+            )
             .catch(() => console.log("Failed 2"))
         )
         .catch((err) => res.status(400).json(`Error: ${err}`));
     })
     .catch((err) => res.status(400).json(`Error: ${err}`));
-
-
 };

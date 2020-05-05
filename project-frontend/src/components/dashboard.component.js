@@ -1,9 +1,11 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import NavHeader from "./navbar.component";
 import { Link } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import ReactHtmlParser from "react-html-parser";
 import ReactPaginate from "react-paginate";
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
 
 class Dashboard extends Component {
   constructor() {
@@ -25,15 +27,18 @@ class Dashboard extends Component {
   }
 
   async componentDidMount() {
-    if(!document.cookie){
+    if (!document.cookie) {
       window.alert("PLEASE LOG-IN TO CONTINUE");
       window.location.pathname = "/sign-in";
-
     }
 
-    fetch(`${process.env.REACT_APP_API_URL}/articles/all`, {
-      credentials: "include",
-    })
+    const requestOptions = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${cookies.get("token")}`,
+      },
+    };
+    fetch(`${process.env.REACT_APP_API_URL}/articles/all`, requestOptions)
       .then((res) => res.json())
       .then(
         (result) => {
@@ -50,9 +55,7 @@ class Dashboard extends Component {
           });
         }
       );
-    fetch(`${process.env.REACT_APP_API_URL}/articles/mine`, {
-      credentials: "include",
-    })
+    fetch(`${process.env.REACT_APP_API_URL}/articles/mine`, requestOptions)
       .then((res) => res.json())
       .then(
         (result) => {
@@ -258,7 +261,10 @@ class Dashboard extends Component {
   deleteArticle(articleId) {
     const requestOptions = {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${cookies.get("token")}`,
+      },
     };
     fetch(
       `${process.env.REACT_APP_API_URL}/articles/${articleId}`,

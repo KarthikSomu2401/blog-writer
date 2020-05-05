@@ -2,13 +2,14 @@ const express = require("express");
 const router = express.Router();
 // Require the controllers WHICH WE DID NOT CREATE YET!!
 const article_controller = require("../controllers/article.controller");
+let middleware = require("../handlers/middleware");
 
-var sessionChecker = (req, res, next) => {
+/* var sessionChecker = (req, res, next) => {
   if (!req.cookies.emailId) {
     res.status(404).redirect("/sign-in");
   }
   next();
-};
+}; */
 
 /**
  * @swagger
@@ -40,8 +41,10 @@ var sessionChecker = (req, res, next) => {
 
 /**
  * @swagger
- * /article/all:
+ * /articles/all:
  *   get:
+ *     security:
+ *      - Bearer: []
  *     tags:
  *       - Article
  *     description: Returns all articles
@@ -55,13 +58,15 @@ var sessionChecker = (req, res, next) => {
  */
 router
   .route("/all")
-  .get(sessionChecker)
+  .get(middleware.checkToken)
   .get(article_controller.getall_articles);
 
 /**
  * @swagger
- * /article/mine:
+ * /articles/mine:
  *   get:
+ *     security:
+ *      - Bearer: []
  *     tags:
  *       - Article
  *     description: Returns all my interested articles
@@ -75,13 +80,15 @@ router
  */
 router
   .route("/mine")
-  .get(sessionChecker)
+  .get(middleware.checkToken)
   .get(article_controller.get_my_articles);
 
 /**
  * @swagger
- * /article/add:
+ * /articles/add:
  *   post:
+ *     security:
+ *      - Bearer: []
  *     tags:
  *       - Article
  *     description: Returns all my interested articles
@@ -100,12 +107,17 @@ router
  *         schema:
  *           $ref: '#/definitions/Article'
  */
-router.route("/add").get(sessionChecker).post(article_controller.article_add);
+router
+  .route("/add")
+  .get(middleware.checkToken)
+  .post(article_controller.article_add);
 
 /**
  * @swagger
- * /article/:id:
+ * /articles/:id:
  *   get:
+ *     security:
+ *      - Bearer: []
  *     tags:
  *       - Article
  *     description: Returns all my interested articles
@@ -123,13 +135,15 @@ router.route("/add").get(sessionChecker).post(article_controller.article_add);
  */
 router
   .route("/:id")
-  .get(sessionChecker)
+  .get(middleware.checkToken)
   .get(article_controller.get_article_byId);
 
 /**
  * @swagger
- * /article/search/:id:
+ * /articles/search/:id:
  *   get:
+ *     security:
+ *      - Bearer: []
  *     tags:
  *       - Article
  *     description: Returns all my interested articles
@@ -147,13 +161,15 @@ router
  */
 router
   .route("/search/:id")
-  .get(sessionChecker)
+  .get(middleware.checkToken)
   .get(article_controller.get_article_byId_search);
 
 /**
  * @swagger
- * /article/:id:
+ * /articles/:id:
  *   delete:
+ *     security:
+ *      - Bearer: []
  *     tags:
  *       - Article
  *     description: Returns all my interested articles
@@ -171,13 +187,15 @@ router
  */
 router
   .route("/:id")
-  .get(sessionChecker)
+  .get(middleware.checkToken)
   .delete(article_controller.delete_article_byId);
 
 /**
  * @swagger
- * /article/update/:id:
+ * /articles/update/:id:
  *   post:
+ *     security:
+ *      - Bearer: []
  *     tags:
  *       - Article
  *     description: Returns all my interested articles
@@ -201,7 +219,7 @@ router
  */
 router
   .route("/update/:id")
-  .get(sessionChecker)
+  .get(middleware.checkToken)
   .post(article_controller.edit_article_byId);
 
 module.exports = router;

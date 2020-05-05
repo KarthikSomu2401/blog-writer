@@ -16,15 +16,11 @@ export default class Login extends Component {
     this.myChangeHandler = this.myChangeHandler.bind(this);
   }
 
-
-componentDidMount(){
-
-  if(document.cookie){
-
-    window.location.pathname = "/dashboard";
-
+  componentDidMount() {
+    if (document.cookie) {
+      window.location.pathname = "/dashboard";
+    }
   }
-}
   handleSubmit(event) {
     event.preventDefault();
     let formdata = {
@@ -40,32 +36,17 @@ componentDidMount(){
     fetch(baseUrl + "/users/loginuser", requestOptions)
       .then((response) => response.json())
       .then(function (data) {
-        const promise1 = new Promise(function (resolve, reject) {
-          cookies.set("emailId", data.email);
-          cookies.set("fullName", data.name);
-          setTimeout(function () {
-            resolve();
-          }, 1000);
-        });
-        promise1.then(function (value) {
-          window.location.pathname = "/dashboard";
-        });
-        /* else {
-          if (response.status === 200) {
-            return;
-            const promise1 = new Promise(function (resolve, reject) {
-              console.log(response);
-              cookies.set("emailId", response.email);
-              cookies.set("fullName", response.name);
-              setTimeout(function () {
-                resolve();
-              }, 1000);
-            });
-            promise1.then(function (value) {
-              //window.location.pathname = "/dashboard";
-            });
-          }
-        } */
+        if (data.success) {
+          const promise1 = new Promise(function (resolve, reject) {
+            cookies.set("token", data.token);
+            setTimeout(function () {
+              resolve();
+            }, 1000);
+          });
+          promise1.then(function (value) {
+            window.location.pathname = "/dashboard";
+          });
+        }
       });
   }
 

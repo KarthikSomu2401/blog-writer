@@ -12,11 +12,11 @@ const options = {
       title: "Article API",
       version: "1.0.0",
     },
-    securitySchemes: {
-      cookieAuth: {
+    securityDefinitions: {
+      Bearer: {
         type: "apiKey",
-        in: "cookie",
-        name: "JSESSIONID",
+        name: "Authorization",
+        in: "header",
       },
     },
   },

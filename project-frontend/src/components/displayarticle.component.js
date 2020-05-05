@@ -4,18 +4,21 @@ import ReactHtmlParser from "react-html-parser";
 import { Link } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import Cookies from "js-cookie";
+import HistoryModalWindow from "./bootmodal.component";
 
 class DisplayArticle extends Component {
   articleId = "";
   state = {
     error: null,
     isLoaded: false,
+    modalShow: false,
     article: {
       _id: "",
       authorname: "",
       title: "",
       article: "",
       tags: [],
+      history: [],
     },
   };
 
@@ -50,6 +53,10 @@ class DisplayArticle extends Component {
         //console.log(articleObj);
         this.setState({ article: articleObj });
       });
+  }
+
+  setModalShow(changeToggle) {
+    this.setState({ modalShow: changeToggle });
   }
 
   deleteAlert(articleId) {
@@ -120,6 +127,11 @@ class DisplayArticle extends Component {
     return (
       <div>
         <NavHeader />
+        <HistoryModalWindow
+          show={this.state.modalShow}
+          dynamicdata={this.state.article.history}
+          onHide={() => this.setModalShow(false)}
+        />
         <br />
         <div className="container container-fluid">
           <div className="row">
@@ -129,7 +141,25 @@ class DisplayArticle extends Component {
                 Author Name: {this.state.article.authorname}
                 <br />
               </h6>
-              <p>Edited By:</p>
+              {this.state.article.history.length > 0 ? (
+                <div>
+                  <p>
+                    Edited By:{" "}
+                    {Array.from(
+                      new Set(
+                        this.state.article.history.map((val) => val.fullName)
+                      )
+                    )
+                      .slice(0, 3)
+                      .join(",")}
+                  </p>
+                  <a href="#" onClick={() => this.setModalShow(true)}>
+                    Full Edit History >
+                  </a>
+                </div>
+              ) : (
+                <span></span>
+              )}
               {this.state.article.tags.length > 0 ? (
                 <p>
                   Tags:{" "}

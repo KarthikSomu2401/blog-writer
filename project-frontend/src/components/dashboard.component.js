@@ -30,48 +30,48 @@ class Dashboard extends Component {
     if (!document.cookie) {
       window.alert("PLEASE LOG-IN TO CONTINUE");
       window.location.pathname = "/sign-in";
+    } else {
+      const requestOptions = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.get("token")}`,
+        },
+      };
+      fetch(`${process.env.REACT_APP_API_URL}/articles/all`, requestOptions)
+        .then((res) => res.json())
+        .then(
+          (result) => {
+            this.setState({
+              isLoaded: true,
+              articles: result,
+            });
+            this.paginationFilter(result);
+          },
+          (error) => {
+            this.setState({
+              isLoaded: true,
+              error,
+            });
+          }
+        );
+      fetch(`${process.env.REACT_APP_API_URL}/articles/mine`, requestOptions)
+        .then((res) => res.json())
+        .then(
+          (result) => {
+            this.setState({
+              isLoaded: true,
+              myArticles: result,
+            });
+            this.myArticlesFilter(result);
+          },
+          (error) => {
+            this.setState({
+              isLoaded: true,
+              error,
+            });
+          }
+        );
     }
-
-    const requestOptions = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${cookies.get("token")}`,
-      },
-    };
-    fetch(`${process.env.REACT_APP_API_URL}/articles/all`, requestOptions)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          this.setState({
-            isLoaded: true,
-            articles: result,
-          });
-          this.paginationFilter(result);
-        },
-        (error) => {
-          this.setState({
-            isLoaded: true,
-            error,
-          });
-        }
-      );
-    fetch(`${process.env.REACT_APP_API_URL}/articles/mine`, requestOptions)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          this.setState({
-            isLoaded: true,
-            myArticles: result,
-          });
-          this.myArticlesFilter(result);
-        },
-        (error) => {
-          this.setState({
-            isLoaded: true,
-            error,
-          });
-        }
-      );
   }
 
   deleteAlert(articleId) {

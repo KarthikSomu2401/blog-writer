@@ -222,4 +222,9 @@ router
   .post(middleware.checkToken)
   .post(article_controller.edit_article_byId);
 
+router
+  .route("/unlock/:id")
+  .delete(middleware.checkToken)
+  .delete(article_controller.unlockArticle);
+
 module.exports = router;

@@ -16,11 +16,22 @@ export default class Login extends Component {
     this.myChangeHandler = this.myChangeHandler.bind(this);
   }
 
-  componentDidMount() {
-    if (document.cookie) {
-      window.location.pathname = "/dashboard";
-    }
-  }
+ /*  componentDidMount() {
+    const requestOptions = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${cookies.get("token")}`,
+      },
+    };
+    fetch(`${process.env.REACT_APP_API_URL}/users/verifytoken`, requestOptions)
+      .then((response) => response.json())
+      .then(function (data) {
+        if (data.success) {
+          window.location.href = "/dashboard";
+        }
+      });
+  } */
   handleSubmit(event) {
     event.preventDefault();
     let formdata = {
@@ -32,8 +43,7 @@ export default class Login extends Component {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formdata),
     };
-    var baseUrl = process.env.REACT_APP_API_URL;
-    fetch(baseUrl + "/users/loginuser", requestOptions)
+    fetch(`${process.env.REACT_APP_API_URL}/users/loginuser`, requestOptions)
       .then((response) => response.json())
       .then(function (data) {
         if (data.success) {

@@ -9,11 +9,13 @@ const db = require("./database");
 const MongoDBStore = require("connect-mongodb-session")(session);
 const user = require("./routes/user.route");
 const article = require("./routes/article.route");
-const profile = require('./routes/profile.route');
+const profile = require("./routes/profile.route");
 var morgan = require("morgan");
 var app = express();
 const swaggerUi = require("swagger-ui-express");
 var specs = require("./swagger");
+const config = require("./handlers/config");
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 const dBstore = new MongoDBStore({
@@ -30,7 +32,7 @@ app.use(cookieParser());
 
 app.use(
   session({
-    key: "user_sid",
+    key: config.secret,
     secret: envs.NODE_ENV,
     // genid: (req) => {
     //   return envs.NODE_ENV + uuid();
@@ -48,7 +50,7 @@ app.use(
 
 app.use("/users", user);
 app.use("/articles", article);
-app.use('/profile',profile);
+app.use("/profile", profile);
 
 var listener = app.listen(envs.PORT, function () {
   console.log("Listening on port " + listener.address().port);

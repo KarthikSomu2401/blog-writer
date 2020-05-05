@@ -14,6 +14,7 @@ class EditArticle extends Component {
   state = {
     error: null,
     isLoaded: false,
+    shouldBlock: true,
     article: {
       _id: "",
       authorname: "",
@@ -23,7 +24,7 @@ class EditArticle extends Component {
       inputValue: "",
     },
     count: 0,
-    time: 30,
+    time: 600,
     final: 0,
   };
 
@@ -78,8 +79,6 @@ class EditArticle extends Component {
     this.setState({ article });
   };
   componentWillUnmount() {
-    //clearInterval(exe)
-
     window.removeEventListener("beforeunload", this.onUnload);
   }
   componentDidMount() {
@@ -143,8 +142,31 @@ class EditArticle extends Component {
         window.location.pathname = "/dashboard";
       });
   }
+  onUnload = async (event) => {
+    if (this.state.shouldBlock) {
+      event.preventDefault();
+    } else {
+      const requestOptions = {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        },
+      };
+      await fetch(
+        `${process.env.REACT_APP_API_URL}/articles/unlock/${this.articleId}`,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then(function (data) {
+          console.log("article lock released");
+        });
+    }
+    return event;
+  };
 
   handleSubmit(event) {
+    this.state.shouldBlock = false;
     event.preventDefault();
     const requestOptions = {
       method: "POST",

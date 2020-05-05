@@ -81,4 +81,6 @@ router
   .get(middleware.checkToken)
   .get(user_controller.logout_user);
 
+router.route("/verifytoken").get(middleware.checkToken);
+
 module.exports = router;

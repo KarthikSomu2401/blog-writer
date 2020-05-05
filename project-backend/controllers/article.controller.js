@@ -54,8 +54,19 @@ exports.article_add = function (req, res, next) {
 
 exports.get_article_byId_search = function (req, res, next) {
   Article.findById(req.params.id)
-    .then(function (article) {
-      res.json(article);
+    .then(async function (articleResp) {
+      let articlehistory = await UserLog.find({
+        articleId: req.params.id,
+      }).sort({ createdAt: "desc" });
+      var finalArticle = {
+        title: articleResp.title,
+        authorname: articleResp.authorname,
+        createdAt: articleResp.createdAt,
+        article: articleResp.article,
+        tags: articleResp.tags,
+        history: articlehistory,
+      };
+      res.json(finalArticle);
     })
     .catch((err) => res.status(400).json("Fail"));
 };
@@ -134,4 +145,10 @@ exports.edit_article_byId = function (req, res, next) {
         .catch((err) => res.status(400).json(`Error: ${err}`));
     })
     .catch((err) => res.status(400).json(`Error: ${err}`));
+};
+
+exports.unlockArticle = function (req, res, next) {
+  ArticleLock.findOneAndRemove({ id: req.params.id })
+    .then(() => res.json())
+    .catch((err) => res.json(`${err}`));
 };

@@ -1,10 +1,5 @@
-import React, { Component } from "react";
-import { FaUserPlus } from "react-icons/fa";
-import Button from "react-bootstrap/Button";
+import { Component } from "react";
 import Cookies from "universal-cookie";
-import NavHeader from "./navbar.component";
-import { Link } from "react-router-dom";
-import { confirmAlert } from "react-confirm-alert";
 const cookies = new Cookies();
 export default class Logout extends Component {
   constructor(props) {

@@ -6,7 +6,6 @@ let checkToken = (req, res, next) => {
   if (token.startsWith("Bearer ")) {
     // Remove Bearer from string
     token = token.slice(7, token.length);
-    console.log(token);
   }
 
   if (token) {

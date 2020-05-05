@@ -114,7 +114,7 @@ router
 
 /**
  * @swagger
- * /articles/:id:
+ * /articles/{id}:
  *   get:
  *     security:
  *      - Bearer: []
@@ -140,7 +140,7 @@ router
 
 /**
  * @swagger
- * /articles/search/:id:
+ * /articles/search/{id}:
  *   get:
  *     security:
  *      - Bearer: []
@@ -166,7 +166,7 @@ router
 
 /**
  * @swagger
- * /articles/:id:
+ * /articles/{id}:
  *   delete:
  *     security:
  *      - Bearer: []
@@ -192,7 +192,7 @@ router
 
 /**
  * @swagger
- * /articles/update/:id:
+ * /articles/update/{id}:
  *   post:
  *     security:
  *      - Bearer: []

@@ -70,7 +70,6 @@ exports.get_article_byId = function (req, res, next) {
   ArticleLock.findOne({ id: req.params.id })
     .then(function (article_lock) {
       if (!article_lock) {
-        console.log(req.decoded.name);
         Article.findById(req.params.id)
           .then(function (article) {
             lockFile
@@ -92,6 +91,8 @@ exports.delete_article_byId = function (req, res, next) {
     timestamp: new Date(),
     action: "ARTICLE DELETION",
     articleId: req.params.id,
+    emailId: req.decoded.email,
+    fullName: req.decoded.name,
   });
   Article.findByIdAndDelete(req.params.id)
     .then(() =>
@@ -105,11 +106,11 @@ exports.delete_article_byId = function (req, res, next) {
 
 exports.edit_article_byId = function (req, res, next) {
   const user5 = new UserLog({
-    fullName: req.body.authorname,
+    emailId: req.decoded.email,
+    fullName: req.decoded.name,
     timestamp: new Date(),
     action: "ARTICLE UPDATION",
     articleId: req.params.id,
-    articleTitle: req.body.title,
   });
   Article.findById(req.params.id)
     .then((article) => {
